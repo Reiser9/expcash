@@ -1,0 +1,266 @@
+.header__top--inner{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem;
+}
+
+.header__top--left--inner, .header__top--profile--inner, .header__top--language--inner{
+	display: flex;
+	align-items: center;
+}
+
+.header__top--choose--color{
+	font-size: var(--bigF);
+	padding: 1.2rem 1.6rem;
+	background: var(--sectionB);
+	border-radius: var(--bordersmallO);
+	margin-right: 3rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	transition: .2s linear;
+} 
+
+.header__top--choose--color:hover{
+	background: var(--section2B);
+}
+
+.choose__color{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: var(--blueC);
+	margin-left: 1rem;
+	transition: .2s linear;
+}
+
+.header__top--description{
+	font-size: var(--bigF);
+	padding: 1.2rem 1.6rem;
+	background: var(--sectionB);
+	border-radius: var(--bordersmallO);
+}
+
+.header__top--language--inner{
+	margin-right: 4.5rem;
+}
+
+.header__top--language--flag{
+	text-transform: uppercase;
+	padding: .8rem 1.5rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	background: var(--sectionB);
+	transition: .3s linear;
+}
+
+.header__top--language--flag:hover{
+	background: var(--section2B);
+}
+
+.header__top--language--flag:first-child{
+	border-radius: 1.3rem 0 0 1.3rem;
+}
+
+.header__top--language--flag:last-child{
+	border-radius: 0 1.3rem 1.3rem 0;
+}
+
+.language__flag{
+	width: 23px;
+}
+
+.menu__mobile--tools{
+	display: none;
+	align-items: center;
+}
+
+.menu__mobile--icon{
+	display: flex;
+	color: var(--blueC);
+	font-size: 3rem;
+	cursor: pointer;
+	position: relative;
+	transition: .2s linear;
+}
+
+.menu__mobile--icon:hover{
+	opacity: .6;
+}
+
+.menu__mobile--chat{
+	display: none;
+	color: var(--blueC);
+	font-size: 2.9rem;
+	margin-left: 4rem;
+	transition: .2s linear;
+}
+
+.menu__mobile--chat:hover{
+	opacity: .6;
+}
+
+.header__bottom--inner{
+	width: 100%;
+	background: var(--sectiondarkB);
+}
+
+.header__bottom--content{
+	padding: 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.header__bottom--page{
+	font-size: var(--gamesF);
+	font-family: var(--boldF);
+	margin-right: 1rem;
+}
+
+.header__bottom--links{
+	display: flex;
+	align-items: center;
+}
+
+.header__bottom--link{
+	padding: 1rem 1.3rem;
+	margin-right: 3rem;
+	display: inline-block;
+	background: var(--linkB);
+	font-size: var(--bigF);
+	display: flex;
+	align-items: center;
+	position: relative;
+	z-index: 2;
+	transition: .3s linear;
+}
+
+.header__bottom--link:before{
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: var(--blueC);
+	z-index: -1;
+	transition: transform .5s;
+	transform-origin: 0 0;
+	transition-timing-function: cubic-bezier(0.5, 1.6, 0.4, 0.7);
+	transform: scaleY(0);
+}
+
+.header__bottom--link:hover:before, .active.header__bottom--link:before{
+	transform: scaleY(1);
+}
+
+.header__bottom--link:last-child{
+	margin-right: 0;
+}
+
+@media(max-width: 1300px){
+	.header__top--description{
+		display: none;
+	}
+
+	.header__top--choose--color, .header__top--language--inner{
+		margin-right: 1.5rem;
+	}
+
+	.header__bottom--content{
+		padding: 2.5rem;
+		flex-wrap: wrap;
+	}
+
+	.header__bottom--links{
+		width: 100%;
+		order: 3;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.header__bottom--link{
+		margin-top: 2rem;
+	}
+
+	.header__bottom--link.payment__header{
+		margin-top: 0;
+	}
+}
+
+@media(max-width: 998px){
+	.header__top--inner{
+		position: fixed;
+		top: 0;
+		left: 0;
+		background: var(--sectiondarkB);
+		z-index: 100;
+	}
+
+	.header__top--left--inner, .header__top--profile--inner,
+	.header__bottom--content{
+		display: none;
+	}
+
+	.header__top--choose--color{
+		margin-right: 0;
+		padding: .5rem 1rem;
+		cursor: default;
+	}
+
+	.header__top--language--inner{
+		margin-right: 0;
+		padding: .2rem .5rem;
+	}
+
+	.header__top--language--flag, .menu__mobile--icon{
+		cursor: default;
+	}
+
+	.menu__mobile--tools{
+		display: flex;
+	}
+
+	.header__bottom--page{
+		margin-top: 2.5rem;
+	}
+
+	.header__bottom--link{
+		margin: 1.5rem 0 0 0;
+		width: 100%;
+		text-align: center;
+		justify-content: center;
+		cursor: default;
+	}
+}
+
+@media(max-width: 870px){
+	.header__top--choose--color{
+		margin-top: 2rem;
+	}
+}
+
+@media(max-width: 480px){
+	.menu__mobile--chat{
+		display: flex;
+	}
+}
+
+@media(max-height: 630px){
+	.choose__color--box{
+		margin-top: 3rem;
+	}
+}
+
+@media(max-height: 560px){
+	.choose__color--box{
+		margin-top: 1rem;
+		max-height: 120px;
+	}
+}

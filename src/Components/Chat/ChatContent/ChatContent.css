@@ -1,0 +1,13 @@
+.chat__inner{
+	height: calc(100% - 5.5rem);
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: auto;
+	margin: 1rem 0;
+	padding: 0rem 1rem;
+}
+
+.chat__scroll{
+	height: auto;
+	width: 100%;
+}

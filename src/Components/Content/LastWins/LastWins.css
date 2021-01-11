@@ -1,0 +1,84 @@
+.main__last--wins--title--box{
+	font-size: var(--titleF);
+	margin-top: 7rem;
+	padding-bottom: .5rem;
+	display: flex;
+	justify-content: center;
+}
+
+.main__last--wins--title{
+	border-bottom: 2px dashed var(--whiteC);
+}
+
+.main__last--wins--inner{
+	padding: 2rem 7.5rem;
+	margin-top: 2rem;
+	background: var(--sectiondarkB);
+	width: 100%;
+	word-break: break-word;
+	text-align: center;
+}
+
+.main__last--wins--box{
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 350px;
+}
+
+.main__last--wins--views, .main__last--wins--item{
+	width: 100%;
+	background: var(--nickB);
+	padding: 1.5rem 2rem;
+	display: flex;
+	align-items: center;
+}
+
+.main__last--wins--view, .main__last--wins--value{
+	padding: 0px .5rem;
+}
+
+.main__last--wins--item{
+	background: var(--sectionB);
+	padding: 2.5rem 2rem;
+	border-bottom: 3px solid var(--sendB);
+}
+
+.main__last--wins--item:last-child{
+	border-bottom: none;
+}
+
+.game__view{
+	width: 15%;
+}
+
+.user__view{
+	width: 20%;
+}
+
+.time__view{
+	width: 10%;
+}
+
+.forecast__view{
+	width: 20%;
+}
+
+.coef__view{
+	width: 15%;
+}
+
+.wins__view{
+	width: 20%;
+}
+
+@media(max-width: 1200px){
+	.main__last--wins--inner{
+		padding: 2rem;
+	}
+}
+
+@media(max-width: 768px){
+	.main__last--wins--title--box, .main__last--wins--inner{
+		display: none;
+	}
+}

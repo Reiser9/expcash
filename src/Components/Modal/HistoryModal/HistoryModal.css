@@ -1,0 +1,133 @@
+.history__modal{
+	display: block;
+}
+
+.history__content{
+	min-width: 800px;
+	max-width: 850px;
+}
+
+.history__games--inner{
+	margin-top: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.history__games--link{
+	padding: 1rem 1.5rem;
+	border-radius: var(--borderO);
+	border: 1px solid var(--blueC);
+	background: var(--sectiondarkB);
+	margin: .5rem;
+	transition: .2s linear;
+}
+
+.history__games--link:hover{
+	background: var(--blueC);
+}
+
+.history__games--link--active{
+	background: var(--blueC);
+}
+
+.history__games--result--inner{
+	padding: 0 2rem 2rem 2rem;
+	margin-top: 1rem;
+	overflow-y: auto;
+	max-height: 525px;
+	width: 100%;
+}
+
+.history__games--result{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.history__games--result--views,
+.history__games--result--item{
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: space-between;
+	padding: .5rem 0;
+}
+
+.history__games--result--views{
+	border-bottom: 1px solid var(--blueC);
+}
+
+.history__games--result--item{
+	border-bottom: 1px solid var(--greyC);
+}
+
+.history__games--result--views--text,
+.history__games--result--item--text{
+	width: 25%;
+	text-align: center;
+	padding: 1rem;
+	word-break: break-word;
+	border-radius: 20px;
+	font-weight: 900;
+}
+
+.history__games--result--views--text{
+	font-size: var(--playF);
+}
+
+.histori__games--mobile{
+	display: none;
+}
+
+.history__active--link{
+	background: var(--blueC);
+}
+
+@media(max-width: 998px){
+	.history__content{
+		min-width: 550px;
+		max-width: 550px;
+		padding: 2rem;
+	}
+}
+
+@media(max-width: 610px){
+	.history__content{
+		min-width: 250px;
+		max-width: 300px;
+		padding: 2rem 1rem;
+	}
+
+	.history__games--result--inner{
+		height: 330px;
+	}
+
+	.history__games--result--views{
+		display: none;
+	}
+
+	.history__games--result--item{
+		flex-direction: column;
+		border: 1px solid var(--blueC);
+		margin-top: 4rem;
+		padding: 0;
+	}
+
+	.history__games--result--item:nth-child(2){
+		margin-top: 1rem;
+	}
+
+	.history__games--result--item--text{
+		width: 100%;
+	}
+
+	.histori__games--mobile{
+		display: block;
+		padding: 1rem;
+		background: var(--blueC);
+		width: 100%;
+		text-align: center;
+	}
+}

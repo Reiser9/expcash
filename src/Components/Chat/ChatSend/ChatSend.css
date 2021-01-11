@@ -1,0 +1,83 @@
+.chat__send--inner{
+	padding: 1.5rem 3rem;
+	background: var(--sectiondarkB);
+	width: 100%;
+	max-height: 75px;
+	height: 100%;
+	flex-shrink: 0;
+	box-shadow: -4px 3px 20px var(--section2B);
+}
+
+.chat__send--box{
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.noregister__chat .chat__send--input{
+	pointer-events: none;
+}
+
+.noregister__chat .chat__send--input::placeholder{
+	color: #de2d2d;
+}
+
+.noregister__chat .chat__send--buttons .button{
+	pointer-events: none;
+}
+
+.chat__send--input{
+	padding: 1rem 2rem;
+	resize: none;
+	height: 44px;
+	width: 220px;
+	color: var(--whiteC);
+	background: var(--sectionB);
+	border-radius: var(--borderO);
+}
+
+.chat__send--buttons{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.chat__send--button, .chat__send--smail{
+	width: 44px;
+	height: 44px;
+	border-radius: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--sendB);
+	transition: .3s linear;
+}
+
+.chat__send--button:hover, .chat__send--smail:hover{
+	opacity: .5;
+}
+
+.chat__send--smail{
+	background: none;
+	border: 1px solid var(--sendB);
+	margin-top: 1rem;
+}
+
+.send__icon{
+	color: var(--blueC);
+}
+
+.smile__icon{
+	color: #F6D061;
+}
+
+@media(max-width: 480px){
+	.chat__send--inner{
+		border-radius: 0;
+	}
+
+	.chat__send--input{
+		width: 100%;
+		margin-right: 1.5rem;
+	}
+}

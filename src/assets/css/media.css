@@ -1,0 +1,359 @@
+@media(max-width: 1400px){
+	.expbattler__team{
+		order: 3;
+		margin-top: 2rem;
+	}
+
+	.expbattler__inner{
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.expbattler__wheel--center{
+		margin: 0 2rem;
+	}
+}
+
+@media(max-width: 1300px){
+	.container{
+		width: 1150px;
+	}
+
+	.payment{
+		display: none;
+	}
+}
+
+@media(max-width: 1200px){
+	.container{
+		width: 950px;
+	}
+}
+
+@media(max-width: 998px){
+	.container{
+		width: 728px;
+	}
+
+	.footer__logo{
+		width: 100%;
+		justify-content: center;
+	}
+
+	.button, .modalw__label,
+	.expbattler__button--forecast .expbattle__button--drag.active__button--bet{
+		cursor: default;
+	}
+
+	.header{
+		margin-bottom: 60px;
+	}
+}
+
+@media(max-width: 768px){
+	.container{
+		width: 445px;
+	}
+
+	.modal__title{
+		font-size: 2.5rem;
+	}
+
+	.modal__content{
+		padding: 1.5rem;
+	}
+
+	.modal__cross{
+		top: 20px;
+		right: 20px;
+		font-size: 3rem;
+	}
+
+	.notify{
+		width: 300px;
+	}
+
+	.notify__content{
+		padding: 1rem 2rem;
+	}
+
+	.notify__progress{
+		height: 3px;
+	}
+
+	.notify__icon--inner{
+		width: 35px;
+		height: 35px;
+		font-size: 1.6rem;
+	}
+
+	.notify__text--inner{
+		max-width: 210px;
+	}
+
+	.notify__title{
+		padding-right: 2rem;
+	}
+
+	.modalw__inner{
+		max-width: 380px;
+	}
+
+	.subbutton__link{
+		margin-top: 1rem;
+	}
+
+	.expbattler__inner{
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.expbattler__team.expbattler__blue--team{
+		margin-right: 0;
+		border-radius: 0;
+		border: 1px solid #517ff1;
+		max-width: 100%;
+		border-left: 0;
+		border-right: 0;
+	}
+
+	.expbattler__team.expbattler__red--team{
+		margin-left: 0;
+		border-radius: 0;
+		border: 1px solid crimson;
+		max-width: 100%;
+		border-left: 0;
+		border-right: 0;
+	}
+
+	.expbattler__forecast--inner .expbattler__scroll--forecast{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	.expbattler__team .expbattler__forecast--inner{
+		overflow-y: scroll;
+	}
+
+	.expbattler__forecast{
+		max-width: 300px;
+		width: 100%;
+	}
+
+	.expbattler__inner .expbattler__wheel--center{
+		border-radius: 0;
+		border-left: 0;
+		border-right: 0;
+		margin: 0;
+	}
+
+	.expbattler__forecast--money--inner{
+		order: 2;
+	}
+
+	.dot__icon{
+		margin-right: .5rem;
+	}
+
+	.forecast__nick--inner{
+		display: flex;
+		align-items: center;
+	}
+
+	.nick{
+		order: 2;
+	}
+
+	.modalw__content{
+		padding: 2rem 3rem;
+	}
+
+	.modalw__input{
+		padding: 1.2rem 1.5rem;
+	}
+
+	.modalw__button{
+		padding: 1.1rem;
+		margin-top: 1.5rem;
+		max-width: 100%;
+	}
+
+	.subbutton__links{
+		margin-top: .5rem;
+		flex-direction: column;
+	}
+
+	.button__vk{
+		margin: 2rem 0 1rem 0;
+		width: 100%;
+	}
+}
+
+@media(max-width: 610px){
+	.history__games--result--inner{
+		height: 330px;
+	}
+
+	/* Колесо expbattler */ 
+
+	.expbattler__forecast--button--inner .expbattler__forecast--button{
+		max-width: 47%;
+		width: 100%;
+		margin-right: 10px;
+	}
+
+	.expbattler__forecast--button--inner .expbattler__forecast--button:nth-child(even){
+		margin-right: 0;
+	}
+
+	.circle__battle{
+		width: 250px;
+	}
+
+	.expbattler__wheel--center .expbattler__button--forecast{
+		max-width: 250px;
+	}
+
+	.expbattler__button--forecast .expbattle__button--drag{
+		font-size: 1.3rem;
+		max-width: 150px;
+		padding: 1.2rem;
+	}
+
+	.expbattle__button--drag .bet__icon{
+		font-size: var(--bigF);
+	}
+}
+
+@media(max-width: 480px){
+	.container{
+		width: 290px;
+	}
+
+	.input__error{
+		font-size: 1.2rem;
+	}
+
+	.modal {
+		padding: 1rem;
+	}
+
+	.modal__content {
+		justify-content: space-around;
+		max-height: 100%;
+		max-width: 100%;
+	}
+
+	.footer__logo{
+		display: flex;
+	}
+
+	.games{
+		border-radius: 0;
+	}
+
+	.chat__img--user--box{
+		width: 13%;
+		margin-right: 1rem;
+	}
+
+	.footer__logo{
+		display: flex;
+	}
+
+	.notify{
+		width: 250px;
+	}
+
+	.notify__content{
+		padding: 1rem;
+	}
+
+	.notify__icon--inner{
+		width: 30px;
+		height: 30px;
+		font-size: 1.4rem;
+	}
+
+	.notify__text--inner{
+		max-width: 190px;
+	}
+
+	.notify__title{
+		padding-right: 2rem;
+	}
+
+	.modalw__inner{
+		max-width: 280px;
+	}
+
+	.modalw__content{
+		padding: 1.5rem;
+	}
+
+	.modalw__button{
+		max-width: 100%;
+		padding: 1rem 2rem;
+	}
+
+	.modalw__title{
+		font-size: 1.8rem;
+	}
+
+	.subbutton__links{
+		flex-direction: column;
+	}
+
+	.subbutton__link{
+		margin: 1rem 0 0 0;
+	}
+
+	.button__vk{
+		font-size: var(--playF);
+	}
+
+	.fa-vk{
+		top: 0px;
+	}
+
+	.modalw__button{
+		font-size: 1.6rem;
+	}
+}
+
+/*============== Высота ==============*/
+
+@media(max-height: 725px){
+	.modal{
+		padding: 1rem;
+	}
+
+	.modal__content{
+		max-width: 100%;
+		max-height: 100%;
+	}
+}
+
+@media(max-height: 630px){
+	.modal__content{
+		padding: 1.5rem;
+	}
+
+	.modal__cross{
+		top: 20px;
+		right: 20px;
+		font-size: 3rem;
+	}
+}
+
+@media(max-height: 560px){
+	.modal__title{
+		font-size: var(--gamesF);
+	}
+
+	.modal__cross{
+		font-size: 2.5rem;
+	}
+}

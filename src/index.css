@@ -1,0 +1,475 @@
+@font-face{
+	font-family: MontserratLight;
+	src: url("./assets/fonts/MontserratLight.ttf");
+}
+@font-face{
+	font-family: MontserratRegular;
+	src: url("./assets/fonts/MontserratRegular.ttf");
+}
+@font-face{
+	font-family: MontserratMedium;
+	src: url("./assets/fonts/MontserratMedium.ttf");
+}
+@font-face{
+	font-family: MontserratSemibold;
+	src: url("./assets/fonts/MontserratSemiBold.ttf");
+}
+@font-face{
+	font-family: MontserratBold;
+	src: url("./assets/fonts/MontserratBold.ttf");
+}
+
+/* Base Setting */
+html{
+	font-size: 10px;
+
+	/* Text color */ 
+	--whiteC: #fff;
+	--blackC: #000;
+	--blueC: #517ff1;
+	--bluedarkC: #2D67F7;
+	--lightgreyC: #5e697e;
+	--greyC: #606266;
+	--yellowC: #a19c5e;
+	--greenC: #5bb671;
+	--scrollC: #1d2129;
+	--nickiconC: #2d3340;
+	--textC: #4e5768;
+	--notifyInfo: #007de9;
+	--notifySucces: #32ba7c;
+	--notifyError: #eb504f;
+	--notifyWarn: #dfcf00;
+
+	/* Background color */ 
+	--sectionB: #22262f;
+	--section2B: #191C24;
+	--sectiondarkB: #20242d;
+	--sectiondark2B: #101215;
+	--borderB: #2f3642;
+	--sendB: #2f3441;
+	--nickB: #252933;
+	--linkB: #272c36;
+	--menuB: #101317;
+
+	/* Font size */
+	--smallF: 1.2rem;
+	--nickF: 1.4rem;
+	--mediumF: 1.5rem;
+	--bigF: 1.6rem;
+	--playF: 1.8rem;
+	--gamesF: 2rem;
+	--titleF: 2.2rem;
+
+	/* Font family */
+	--lightF: MontserratLight;
+	--regularF: MontserratRegular;
+	--mediumF: MontserratMedium;
+	--semiboldF: MontserratSemibold;
+	--boldF: MontserratBold;
+
+	/* Other */
+	--borderO: 1rem;
+	--bordersmallO: .6rem;
+}
+
+body{
+	overflow: hidden;
+	font-family: var(--regularF);
+	background: url("./assets/img/home-bg.jpg");
+	font-size: 1.4rem;
+	color: var(--whiteC);
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*:after,
+*:before{
+	box-sizing: border-box;
+}
+
+a{
+	text-decoration: none;
+	color: var(--whiteC);
+}
+
+ul{
+	margin: 0;
+	padding: 0;
+}
+
+li{
+	list-style-type: none;
+}
+
+h1, h2, h3, h4, h5, h5, p{
+	margin: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+	appearance: none;
+}
+
+button{
+	font-family: var(--regularF);
+	font-size: 1.4rem;
+}
+
+/* ================= Scroll ================= */
+::-webkit-scrollbar{
+	width: 2px;
+}
+
+::-webkit-scrollbar-track{
+	background: var(--scrollC);
+}
+
+::-webkit-scrollbar-thumb{
+	background: var(--sendB);
+	border-radius: 1rem;
+}
+
+/* Специальные классы */
+.main__content{
+	display: flex;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.container{
+	max-width: 1250px;
+	margin: 0 auto;
+}
+
+.button{
+	outline: none;
+	border: none;
+	color: var(--whiteC);
+	background: transparent;
+	display: inline-block;
+	cursor: pointer;
+	transition: .2s linear;
+}
+
+.input{
+	background: none;
+	outline: none;
+	border: none;
+	font-family: var(--regularF);
+	font-size: 1.4rem;
+}
+
+.input:focus::placeholder{
+	opacity: 0;
+}
+
+.input::placeholder{
+	color: var(--whiteC);
+}
+
+.blue{
+	color: var(--blueC);
+	transition: .2s linear;
+}
+
+.green{
+	color: var(--greenC);
+}
+
+.icon{
+	margin-right: .4rem;
+}
+
+.arrow{
+	transition: .4s linear;
+	width: 20px;
+	fill: var(--lightgreyC);
+}
+
+.expcash{
+	font-family: var(--boldF);
+	padding-bottom: .1rem;
+	border-bottom: 1px dashed var(--whiteC);
+}
+
+.pointn{
+	pointer-events: none;
+}
+
+/* Active class */
+.header__top--language--flag.active__flag{
+	background: var(--section2B);
+}
+
+.choose__color--active{
+	border: 5px solid var(--whiteC);
+}
+
+.win{
+	color: green;
+}
+
+.lose{
+	color: red;
+}
+
+/* Классы команд */
+.red__team{
+	color: crimson;
+}
+
+.blue__team{
+	color: #517ff1;
+}
+
+/* Классы мини-игр */
+/* К классу game__inner--mask прописываем
+   класс игры и задаем нужный фон */
+.modal{
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+	padding: 5rem;
+}
+
+.modal__box{
+	overflow-x: hidden;
+}
+
+.modal__content{
+	max-width: 1570px;
+	max-height: 85vh;
+	height: 100%;
+	width: 100%;
+	border-radius: 3rem;
+	background: var(--sectionB);
+	box-shadow: 0 0 100px var(--blueC);
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	transition: .2s linear;
+	padding: 5rem;
+	margin: 0 auto;
+}
+
+.modal__cross{
+	font-size: 4rem;
+	cursor: pointer;
+	position: absolute;
+	top: 30px;
+	right: 40px;
+	color: var(--lightgreyC);
+}
+
+.modal__title{
+	font-size: 3.5rem;
+	padding-bottom: .4rem;
+	border-bottom: 2px dashed var(--lightgreyC);
+	font-family: var(--semiboldF);
+	text-align: center;
+}
+
+.modal__text{
+	margin-top: 1rem;
+	font-size: var(--playF);
+	max-width: 630px;
+	text-align: center;
+	line-height: 1.3;
+}
+
+.modalw{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 101;
+	background: rgba(0, 0, 0, .5);
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: none;
+}
+
+.modalw__inner{
+	max-width: 500px;
+	width: 100%;
+	min-height: calc(100% - 3.5rem);
+	margin: 1.75rem auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modalw__content{
+	position: relative;
+	width: 100%;
+	padding: 2rem 5rem;
+	background: var(--sectionB);
+	border-radius: var(--borderO);
+	box-shadow: 0 0 30px var(--blueC);
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	border: 1px solid var(--blueC);
+}
+
+.modalw__cross{
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 13px;
+	font-size: 2rem;
+	color: var(--whiteC);
+}
+
+.modalw__title{
+	font-size: 3rem;
+	text-align: center;
+	font-weight: 900;
+	margin: 0px 2rem;
+}
+
+.modalw__input{
+	color: var(--whiteC);
+	padding: 1.5rem 2rem;
+	width: 100%;
+	background: var(--sectiondarkB);
+	border-radius: var(--borderO);
+	border: 1px solid var(--blueC);
+}
+
+.modalw__input::placeholder{
+	color: var(--whiteC);
+}
+
+.modalw__button{
+	padding: 1.3rem 2rem;
+	max-width: 70%;
+	width: 100%;
+	border-radius: 2rem;
+	background: var(--blueC);
+	margin-top: 2.5rem;
+	font-size: 1.8rem;
+	text-align: center;
+	word-break: break-all;
+}
+
+.modalw__button:hover{
+	opacity: .6;
+}
+
+.modalw__button.disable{
+	opacity: 0.6;
+	cursor: default;
+	pointer-events: none;
+}
+
+.subbutton__links{
+	margin: 2rem 0 0 0;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: space-around;
+}
+
+.button__vk{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	padding: 1rem 2rem;
+	border-radius: 1.5rem;
+	width: 70%;
+	background: #4973a5;
+	margin: 2rem 0;
+	font-size: 2rem;
+}
+
+.button__vk:hover{
+	background: darken(#4973a5, 10);
+}
+
+.enter__inputs{
+	width: 100%;
+	position: relative;
+}
+
+.enter__inputs:before{
+	content: "";
+	display: block;
+	width: 100%;
+	height: 2px;
+	background: #2f3541;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: .6;
+}
+
+.fa-vk{
+	position: relative;
+	top: 2px;
+}
+
+#registerAgree{
+	display: none;
+}
+
+#registerAgree:checked + .modalw__label:after{
+	transform: scale(1);
+}
+
+.modalw__label{
+	position: relative;
+	cursor: pointer;
+	margin: .5rem 0 0 0;
+	padding-left: 3.5rem;
+}
+
+.modalw__label:before{
+	content: "";
+	position: absolute;
+	top: -3px;
+	left: 0px;
+	width: 25px;
+	height: 25px;
+	background: #1c2028;
+	border: 1px solid transparent;
+	border-radius: .3rem;
+	border: 1px solid var(--blueC);
+	transition: .2s linear;
+}
+
+.modalw__label:after{
+	content: "\f00c";
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	position: absolute;
+	top: 2.5px;
+	left: 6px;
+	transform: scale(0);
+	transition: .2s linear;
+}
+
+.modal__input--wrapper{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-top: 1.5rem;
+}
+
+.input__error{
+	margin-top: 0.8rem;
+	color: red;
+}
