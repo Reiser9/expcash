@@ -87,10 +87,6 @@
 		font-size: 1.6rem;
 	}
 
-	.notify__text--inner{
-		max-width: 210px;
-	}
-
 	.notify__title{
 		padding-right: 2rem;
 	}
@@ -275,10 +271,6 @@
 		width: 30px;
 		height: 30px;
 		font-size: 1.4rem;
-	}
-
-	.notify__text--inner{
-		max-width: 190px;
 	}
 
 	.notify__title{

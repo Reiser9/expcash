@@ -1,30 +1,22 @@
-import firebase from 'firebase/app';
-import "firebase/auth";
-import "firebase/database";
-import {user} from '../../../redux/authReducer.js';
-
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import $ from 'jquery';
 
+import {user} from '../../../redux/authReducer.js';
 import {removeNotifyAC} from '../../../redux/notify-reducer.js';
 
 import './Notify.css';
 
-const Notify = ({title, text, icon, type, id, index, cat, removeNotifyUserAC, removeNotifyAllAC}) => {
-	const offNotify = () => {
-		$("#"+id).children(".notify__progress").removeClass("notify__progress--start");
-	}
-
+const Notify = ({title, text, icon, type, userId, id, index, cat, removeNotifyAC}) => {
 	const removeNotify = () => {
-		
+		removeNotifyAC(index, userId);
 	}
 
-	setTimeout(offNotify, 100);
-	setTimeout(removeNotify, 5100);
+	if(userId !== 'all' && userId !== user.uid){
+		return '';
+	}
 
 	return(
-		<div id={id} className="notify__content">
+		<div className="notify__content" onClick={removeNotify}>
 		    <div className={`notify__icon--inner ${type}`}>
 		        <i className={`fas ${icon}`}></i>
 			</div>
@@ -38,8 +30,6 @@ const Notify = ({title, text, icon, type, id, index, cat, removeNotifyUserAC, re
 			        {text}
 			    </div>
 			</div>
-
-			<div className="notify__progress notify__progress--start"></div>
 		</div>
 	)
 }

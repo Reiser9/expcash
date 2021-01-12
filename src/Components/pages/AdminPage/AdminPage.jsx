@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+import {user} from '../../../redux/authReducer.js';
 import {requestRole} from '../../../redux/user-selectors.js';
 import {clearChatAdmin} from '../../../redux/chat-reducer.js';
 import {addNotifyAC} from '../../../redux/notify-reducer.js';
@@ -16,8 +17,8 @@ const AdminPage = ({role, addNotifyAC}) => {
 		clearChatAdmin();
 	}
 
-	const addNotify = (title, text, type, icon) => {
-		addNotifyAC(title, text, type, icon);
+	const addNotify = (title, text, type, icon, userId) => {
+		addNotifyAC(title, text, type, icon, userId);
 	}
 
 	const changeTitle = (e) => {
@@ -45,7 +46,6 @@ const AdminPage = ({role, addNotifyAC}) => {
 				setIcon('fa-question');
 				break;
 			default:
-				setIcon('');
 				break;
 		}
 	}
@@ -53,6 +53,7 @@ const AdminPage = ({role, addNotifyAC}) => {
 	if(role !== 'admin'){
 		return <Redirect to={'/'} />
 	}
+	// Для добавления уведа для пользователя передать в функцию uid пользователя
 
 	return(
 		<div>
@@ -65,7 +66,9 @@ const AdminPage = ({role, addNotifyAC}) => {
 				<option>error</option>
 				<option>succes</option>
 			</select>
-			<button onClick={() => addNotify(title, text, type, icon)}>Уведомление для всех</button>
+			<button onClick={() => addNotify(title, text, type, icon, 'all')}>Уведомление для всех</button>
+			
+			<button onClick={() => addNotify(title, text, type, icon, user.uid)}>Уведомление для юзера</button>
 		</div>
 	)
 }

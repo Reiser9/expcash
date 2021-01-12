@@ -29,8 +29,13 @@ const notifyReducer = (state = initialState, action) => {
 				}
 			}
 		case REMOVE_NOTIFY:
+			let removedObj = {
+				...state.notify
+			}
+			delete removedObj[action.value];
 			return{
-				...state
+				...state,
+				notify: removedObj
 			}
 		default:
 			return state
@@ -61,7 +66,7 @@ export const removeNotify = (value) => {
 export const initNotifyAC = (user = false) => (dispatch) => {
 	let tempNotifyObj;
 	if(user){
-		firebase.database().ref('users/' + user.uid + '/notify').on('value', snapshot => {
+		firebase.database().ref('users/' + user.uid + '/notify').once('value', snapshot => {
 			if(snapshot.val() !== null){
 				tempNotifyObj = {
 					...tempNotifyObj,
@@ -82,19 +87,30 @@ export const initNotifyAC = (user = false) => (dispatch) => {
 	});
 }
 
-export const addNotifyAC = (title, text, type, icon) => (dispatch) => {
+export const addNotifyAC = (title, text, type, icon, userId) => (dispatch) => {
 	let notifyData = {
 		title,
 		text,
 		icon,
 		type,
+		userId
 	}
 	let notifySnapshot;
 	firebase.database().ref('notify').on('value', snapshot => {
-		notifySnapshot = snapshot.val();
+		notifySnapshot = {
+			...notifySnapshot,
+			...snapshot.val()
+		}
 	});
 
-	if(notifySnapshot !== null){
+	firebase.database().ref('users/' + user.uid + '/notify').on('value', snapshot => {
+		notifySnapshot = {
+			...notifySnapshot,
+			...snapshot.val()
+		}
+	});
+
+	if(Object.keys(notifySnapshot).length !== 0){
 		let ind;
 		for(let i in notifySnapshot){
 			ind = i;
@@ -114,16 +130,20 @@ export const addNotifyAC = (title, text, type, icon) => (dispatch) => {
 			}
 		};
 	}
-	firebase.database().ref('notify').update(notifyData);
+
+	userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + user.uid + '/notify').update(notifyData);
 	dispatch(addNotify(notifyData));
 }
 
-export const addNotifyForUserAC = (title, text, type, icon) => (dispatch) => {
-
-}
-
-export const removeNotifyAC = () => (dispatch) => {
-
+export const removeNotifyAC = (index, userId) => (dispatch) => {
+	if(userId === 'all'){
+		firebase.database().ref('notify/' + index).set({});
+		dispatch(removeNotify(index));
+	}
+	else{
+		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
+		dispatch(removeNotify(index));
+	}
 }
 
 export default notifyReducer;
