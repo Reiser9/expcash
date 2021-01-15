@@ -1,0 +1,56 @@
+.admin__notify{
+	
+}
+
+.admin__notify--add--inner{
+	width: 100%;
+	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 1.5rem;
+	border-radius: 10px;
+	background: #16191f;
+}
+
+.admin__notify--add--inner .modalw__label{
+	margin: 1.5rem 0 1rem 0;
+}
+
+.notify__input{
+	width: 100%;
+	margin-top: 1rem;
+	padding: 0.8rem 1.5rem;
+	color: #fff;
+	border: 1px solid var(--borderB);
+}
+
+.notify__input:first-child{
+	margin-top: 0;
+}
+
+.notify__button{
+	width: 100%;
+	margin-top: 1rem;
+	padding: 0.9rem 1rem;
+	background: var(--borderB);
+}
+
+.notify__button:hover{
+	background: var(--blueC);
+}
+
+.notify__select{
+	width: 100%;
+	border: 1px solid var(--borderB);
+	color: #fff;
+	background: #16191f;
+	padding: 0.7rem 1.2rem;
+	outline: none;
+	font-family: var(--regularF);
+	font-size: 1.4rem;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	margin-top: 1rem;
+}

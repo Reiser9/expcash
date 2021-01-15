@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import $ from 'jquery';
+import {user} from '../../../redux/auth-reducer.js'
 
 import './ChatSend.css';
 
-import {requestIsAuth, requestMessage, requestInitChat} from '../../../redux/user-selectors.js';
+import {requestIsAuth, requestMessage, requestInitChat, requestNotifyEmpty} from '../../../redux/user-selectors.js';
 import {setMessageAC, sendMessage} from '../../../redux/chat-reducer.js';
+import {addNotifyAC} from '../../../redux/notify-reducer.js';
 
-const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown}) => {
+const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown, addNotifyAC, notifyEmpty}) => {
+	const [isDelay, setIsDelay] = useState(false);
+
 	const handleChange = (e) => {
 		let text = e.target.value;
 		setMessageAC(text);
@@ -16,17 +20,30 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 	const sendMessageButton = (e) => {
 		e.preventDefault();
 		if(message.trim() === ''){
-			alert("Нельзя отправить пустое сообщение!");
+			if(notifyEmpty){
+				addNotifyAC('Ошибка', 'Нельзя отправить пустое сообщение!', 'error', 'fa-times', user.uid, 2000, false);
+			}
 		}
 		else if(message.trim().length > 100){
-			alert("Длина сообщения не может превышать 100 символов!");
+			if(notifyEmpty){
+				addNotifyAC('Ошибка', 'Длина сообщения не может превышать 100 символов!', 'error', 'fa-times', user.uid, 2000, false);
+			}
 		}
 		else{
-			sendMessage(message);
-			setMessageCount(messageCount + 1);
-			if(!chatDown){
-				$(".chat__inner").animate({scrollTop: 9999},{duration: 350});
-            	return false;
+			if(!isDelay){
+				setIsDelay(true);
+				setTimeout(() => setIsDelay(false), 5000);
+				sendMessage(message);
+				setMessageCount(messageCount + 1);
+				if(!chatDown){
+					$(".chat__inner").animate({scrollTop: 9999},{duration: 350});
+	            	return false;
+				}
+			}
+			else{
+				if(notifyEmpty){
+					addNotifyAC('Ошибка', 'Можно отправлять сообщение раз в 5 секунд', 'error', 'fa-times', user.uid, 2000, false);
+				}
 			}
 		}
 	}
@@ -78,8 +95,9 @@ const mapStateToProps = (state) => {
 	return{
 		isAuth: requestIsAuth(state),
 		message: requestMessage(state),
-		initChat: requestInitChat(state)
+		initChat: requestInitChat(state),
+		notifyEmpty: requestNotifyEmpty(state)
 	}
 }
 
-export default connect(mapStateToProps, {sendMessage, setMessageAC})(ChatSend);
+export default connect(mapStateToProps, {sendMessage, setMessageAC, addNotifyAC})(ChatSend);

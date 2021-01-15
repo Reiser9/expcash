@@ -7,7 +7,7 @@ import './ColorPickerModal.css';
 import firebase from 'firebase/app';
 import "firebase/database";
 	
-import {user} from '../../../redux/authReducer.js';
+import {user} from '../../../redux/auth-reducer.js';
 import {modalOnOrOff} from '../modalCommon.js';
 import {initSiteColorAC} from '../../../redux/siteColor-reducer.js';
 import {requestUserNameColor} from '../../../redux/user-selectors.js';

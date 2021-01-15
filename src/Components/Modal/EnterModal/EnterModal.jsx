@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 import './EnterModal.css';
 
-import {setDataAC} from '../../../redux/authReducer.js';
+import {setDataAC} from '../../../redux/auth-reducer.js';
 import {enterValid} from '../../common/validate/validate.js';
 import {modalOnAndAllOff, modalOnOrOff} from '../modalCommon.js';
 import {requestInProgress, requestEnterEmail, requestEnterPassword} from '../../../redux/user-selectors.js';

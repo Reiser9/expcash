@@ -5,8 +5,8 @@ import './ChatMessage.css';
 const ChatMessage = ({img, uid, nick, message, role = 'user'}) => {
 	return(
 		<div className="chat__message">
-		    <a href={'user/' + uid} className="site__profile--img">
-		        <img src={img ? img : './assets/img/user.png'} alt="Аватарка" className="user__img" />
+		    <a href={'user/' + uid} className="site__profile--img borderr">
+		        <img src={img ? img : 'https://www.movingauthority.com/static/new_design/images/user.png'} alt="Аватарка" className="user__img" />
 		    </a>
 
 		    <div className="chat__inner--text--inner">

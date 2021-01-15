@@ -16,6 +16,7 @@
 #preloader.preloader__page{
   position: relative;
   background: none;
+  z-index: 1;
 }
 
 #loader {

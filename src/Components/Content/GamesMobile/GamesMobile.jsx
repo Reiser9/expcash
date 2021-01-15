@@ -4,10 +4,11 @@ import {connect} from 'react-redux';
 import './GamesMobile.css';
 
 import GameMobileItem from './GameMobileItem/GameMobileItem.jsx';
+import Preloader from '../../common/Preloader/Preloader-page.jsx';
 
-import {requestGames} from '../../../redux/user-selectors.js';
+import {requestGames, requestGamesProgress} from '../../../redux/user-selectors.js';
 
-const GamesMobile = ({games}) => {
+const GamesMobile = ({games, gamesProgress}) => {
 	const allGames = Object.keys(games).map((key) => {
 	    return games[key];
 	});
@@ -19,7 +20,8 @@ const GamesMobile = ({games}) => {
 		    </div>
 
 		    <div className="game__box--inner--mobile">
-		    	{allGames.map((name, id) => <GameMobileItem key={`${id}_${name}`} gameName={name} />)}
+		    	{gamesProgress ? <Preloader />
+		    	: allGames.map((name, id) => <GameMobileItem key={`${id}_${name}`} gameName={name} />)}
 		    </div>
 
 		</div>
@@ -28,7 +30,8 @@ const GamesMobile = ({games}) => {
 
 const mapStateToProps = (state) => {
 	return{
-		games: requestGames(state)
+		games: requestGames(state),
+		gamesProgress: requestGamesProgress(state)
 	}
 }
 

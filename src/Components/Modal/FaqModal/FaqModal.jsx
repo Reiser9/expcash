@@ -5,8 +5,12 @@ import $ from 'jquery';
 import './FaqModal.css';
 
 import {modalOnOrOff} from '../modalCommon.js';
+import {requestFaq, requestFaqProgress} from '../../../redux/user-selectors.js';
 
-const FaqModal = ({modalOnOrOff}) => {
+import FaqItem from './FaqItem/FaqItem.jsx';
+import Preloader from '../../../Components/common/Preloader/Preloader-mini.jsx';
+
+const FaqModal = ({modalOnOrOff, faq, faqProgress}) => {
     useEffect(() => {
         $("body").on("keydown", function(e){
             if(e.which === 27){
@@ -29,6 +33,10 @@ const FaqModal = ({modalOnOrOff}) => {
         });
     });
 
+    const faqArr = Object.keys(faq).map((key) => {
+        return faq[key]
+    });
+
     const faqModalOff = () => {
         modalOnOrOff('setFaqModalOn', false);
     }
@@ -46,23 +54,10 @@ const FaqModal = ({modalOnOrOff}) => {
                     </div>
 
                     <div className="faq__inner">
-                        <div className="faq__inner--content">
-
-                            <div className="faq__inner--box">
-                                <div className="faq__inner--arrow">
-                                    <i className="fas fa-chevron-down"></i>
-                                </div>
-
-                                <div className="faq__inner--title en">
-                                    какая минимальная сумма вывода?
-                                </div>
-
-                                <div className="faq__inner--answer en">
-                                    минимальная сумма вывода: 150exp, мы сделали именно такую сумму на данный момент, во избежание перегрузок системы обработки платежей
-                                </div>
-                            </div>
-                            
-                        </div>
+                        {faqProgress ? <Preloader /> 
+                        : <div className="faq__inner--content">
+                            {faqArr.map((d, id) => <FaqItem key={`${id}_${d}`} title={d.title} text={d.text}/>)}
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -72,7 +67,8 @@ const FaqModal = ({modalOnOrOff}) => {
 
 const mapStateToProps = (state) => {
     return{
-
+        faq: requestFaq(state),
+        faqProgress: requestFaqProgress(state)
     }
 }
 

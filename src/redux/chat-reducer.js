@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import "firebase/auth";
 import "firebase/database";
 
-import {user} from './authReducer.js';
+import {user} from './auth-reducer.js';
 
 const SET_ONLINE = 'SET_ONLINE';
 const SET_MESSAGE = 'SET_MESSAGE';

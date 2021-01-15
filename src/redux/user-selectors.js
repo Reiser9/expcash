@@ -109,3 +109,15 @@ export const requestFavoriteGamesCount = (state) => {
 export const requestNotify = (state) => {
     return state.notify.notify
 }
+export const requestFaq = (state) => {
+    return state.faq.faq
+}
+export const requestFaqProgress = (state) => {
+    return state.faq.faqProgress
+}
+export const requestGamesProgress = (state) => {
+    return state.app.gamesProgress
+}
+export const requestNotifyEmpty = (state) => {
+    return state.notify.notifyEmpty
+}

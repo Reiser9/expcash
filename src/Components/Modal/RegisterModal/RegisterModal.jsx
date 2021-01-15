@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 import './RegisterModal.css';
 
-import {setDataAC} from '../../../redux/authReducer.js';
+import {setDataAC} from '../../../redux/auth-reducer.js';
 import {registerValid} from '../../common/validate/validate.js';
 import {modalOnAndAllOff, modalOnOrOff} from '../modalCommon.js';
 import {requestRegNick, requestRegPassword, requestRegConfirmPassword, requestRegEmail, requestRegisterAgree,

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import "firebase/auth";
 import "firebase/database";
-import {user} from './authReducer.js';
+import {user} from './auth-reducer.js';
 
 const ADD_FAVORITE_GAMES = 'ADD_FAVORITE_GAMES';
 const REMOVE_FAVORITE_GAMES = 'REMOVE_FAVORITE_GAMES';

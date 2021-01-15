@@ -1,74 +1,42 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React from 'react';
 import {connect} from 'react-redux';
+import {Redirect, NavLink, Switch, Route} from 'react-router-dom';
 
-import {user} from '../../../redux/authReducer.js';
+import './AdminPage.css';
+
 import {requestRole} from '../../../redux/user-selectors.js';
-import {clearChatAdmin} from '../../../redux/chat-reducer.js';
-import {addNotifyAC} from '../../../redux/notify-reducer.js';
+import {withSuspense} from '../../../hoc/withSuspense.js';
 
-const AdminPage = ({role, addNotifyAC}) => {
-	const [title, setTitle] = useState('');
-	const [text, setText] = useState('');
-	const [type, setType] = useState('warn');
-	const [icon, setIcon] = useState('fa-question');
+const AdminChat = React.lazy(() => import('./AdminChat/AdminChat.jsx'));
+const AdminNotify = React.lazy(() => import('./AdminNotify/AdminNotify.jsx'));
+const AdminUsers = React.lazy(() => import('./AdminUsers/AdminUsers.jsx'));
+const AdminMain = React.lazy(() => import('./AdminMain/AdminMain.jsx'));
+const AdminFaq = React.lazy(() => import('./AdminFaq/AdminFaq.jsx'));
 
-	const clearChat = () => {
-		clearChatAdmin();
-	}
-
-	const addNotify = (title, text, type, icon, userId) => {
-		addNotifyAC(title, text, type, icon, userId);
-	}
-
-	const changeTitle = (e) => {
-		setTitle(e.target.value);
-	}
-
-	const changeText = (e) => {
-		setText(e.target.value);
-	}
-	// Создать общий handleChange
-
-	const changeType = (e) => {
-		setType(e.target.value);
-		switch(e.target.value){
-			case 'info':
-				setIcon('fa-exclamation');
-				break;
-			case 'error':
-				setIcon('fa-times');
-				break;
-			case 'succes':
-				setIcon('fa-check');
-				break;
-			case 'warn':
-				setIcon('fa-question');
-				break;
-			default:
-				break;
-		}
-	}
-
+const AdminPage = ({role}) => {
 	if(role !== 'admin'){
 		return <Redirect to={'/'} />
 	}
-	// Для добавления уведа для пользователя передать в функцию uid пользователя
 
 	return(
-		<div>
-			<button onClick={clearChat}>Удалить все сообщения в чате</button>
-			<input onChange={changeTitle} placeholder="Заголовок" />
-			<input onChange={changeText} placeholder="Текст" />
-			<select onChange={changeType}>
-				<option>warn</option>
-				<option>info</option>
-				<option>error</option>
-				<option>succes</option>
-			</select>
-			<button onClick={() => addNotify(title, text, type, icon, 'all')}>Уведомление для всех</button>
-			
-			<button onClick={() => addNotify(title, text, type, icon, user.uid)}>Уведомление для юзера</button>
+		<div className="admin__content">
+			<div className="admin__sidebar">
+				<NavLink exact to={'/admin'} className="admin__sidebar--link">главная</NavLink>
+				<NavLink to={'/admin/chat'} className="admin__sidebar--link">чат</NavLink>
+				<NavLink to={'/admin/notify'} className="admin__sidebar--link">уведомления</NavLink>
+				<NavLink to={'/admin/users'} className="admin__sidebar--link">пользователи</NavLink>
+				<NavLink to={'/admin/faq'} className="admin__sidebar--link">faq</NavLink>
+			</div>
+
+			<div className="admin__inner">
+				<Switch>
+					<Route exact path='/admin' render={() => withSuspense(AdminMain)} />
+					<Route exact path='/admin/chat' render={() => withSuspense(AdminChat)} />
+					<Route exact path='/admin/notify' render={() => withSuspense(AdminNotify)} />
+					<Route exact path='/admin/users' render={() => withSuspense(AdminUsers)} />
+					<Route exact path='/admin/faq' render={() => withSuspense(AdminFaq)} />
+				</Switch>
+			</div>
 		</div>
 	)
 }
@@ -79,4 +47,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {addNotifyAC})(AdminPage);
+export default connect(mapStateToProps, {})(AdminPage);

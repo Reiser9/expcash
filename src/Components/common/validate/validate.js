@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {createAccount, enterAccount, recoveryPassword} from '../../../redux/authReducer.js';
+import {createAccount, enterAccount, recoveryPassword} from '../../../redux/auth-reducer.js';
 
 export const registerValid = (regNick, regPassword, regConfirmPassword, regEmail) => (dispatch) => {
 	let regErrors = {};

@@ -28,7 +28,7 @@
 
 .chat__inner--text{
 	word-break: break-word;
-	margin-top: .5rem;
+	margin-top: .2rem;
 }
 
 /* Роли */
@@ -43,6 +43,7 @@
 @media(max-width: 480px){
 	.chat__message{
 		justify-content: center;
+		margin: 1.5rem 0;
 	}
 
 	.chat__inner--text--inner{

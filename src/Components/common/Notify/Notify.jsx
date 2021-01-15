@@ -1,14 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 
-import {user} from '../../../redux/authReducer.js';
+import {user} from '../../../redux/auth-reducer.js';
 import {removeNotifyAC} from '../../../redux/notify-reducer.js';
 
 import './Notify.css';
 
-const Notify = ({title, text, icon, type, userId, id, index, cat, removeNotifyAC}) => {
+const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false, index, removeNotifyAC}) => {
 	const removeNotify = () => {
 		removeNotifyAC(index, userId);
+	}
+
+	if(!onlyClick){
+		setTimeout(removeNotify, time);
 	}
 
 	if(userId !== 'all' && userId !== user.uid){

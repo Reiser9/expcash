@@ -5,7 +5,7 @@ import $ from 'jquery';
 import './MobileMenu.css';
 
 import {NavLink} from 'react-router-dom';
-import {quitAccount} from '../../../redux/authReducer.js';
+import {quitAccount} from '../../../redux/auth-reducer.js';
 import {modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff, modalOnAndModalOff} from '../modalCommon.js';
 import {requestIsAuth, requestRole, requestNick, requestImg, requestModalMenuOn, requestBalance} from '../../../redux/user-selectors.js';
 
@@ -70,7 +70,7 @@ const MobileMenu = ({modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff
 		        {isAuth && <>
 		        <div onClick={quit} className="header__top--profile">
 		            <span className="site__profile--img">
-		                <img src={img ? img : "./assets/img/user.png"} alt="Аватарка" className="user__img" />
+		                <img src={img ? img : "https://www.movingauthority.com/static/new_design/images/user.png"} alt="Аватарка" className="user__img" />
 		            </span>
 
 		            {nick}

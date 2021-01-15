@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 
 import './Sidebar.css';
 
-import {requestGames} from '../../redux/user-selectors.js';
+import {requestGames, requestGamesProgress} from '../../redux/user-selectors.js';
 import GameItem from './GameItem/GameItem.jsx';
+import Preloader from '../common/Preloader/Preloader-page.jsx';
 
-const Sidebar = ({games}) => {
+const Sidebar = ({games, gamesProgress}) => {
     const allGames = Object.keys(games).map((key) => {
         return games[key];
     });
@@ -19,7 +20,8 @@ const Sidebar = ({games}) => {
                 </div>
 
                 <div className="game__box--inner">
-                    {allGames.map((name, id) => <GameItem key={`${id}_${name}`} gameName={name} />)}
+                    {gamesProgress ? <Preloader />
+                    : allGames.map((name, id) => <GameItem key={`${id}_${name}`} gameName={name} />)}
                 </div>
             </div>
         </div>
@@ -28,7 +30,8 @@ const Sidebar = ({games}) => {
 
 const mapStateToProps = (state) => {
     return{
-        games: requestGames(state)
+        games: requestGames(state),
+        gamesProgress: requestGamesProgress(state)
     }
 }
 

@@ -2,15 +2,16 @@ import firebase from 'firebase/app';
 import "firebase/auth";
 import "firebase/database";
 
-import {user} from './authReducer.js';
+import {user} from './auth-reducer.js';
 
 const INIT_NOTIFY = 'INIT_NOTIFY';
 const ADD_NOTIFY = 'ADD_NOTIFY';
 const REMOVE_NOTIFY = 'REMOVE_NOTIFY';
-let newNotifyUser;
+const SET_NOTIFY_EMPTY = 'SET_NOTIFY_EMPTY';
 
 const initialState = {
-	notify: {}
+	notify: {},
+	notifyEmpty: true
 }
 
 const notifyReducer = (state = initialState, action) => {
@@ -18,7 +19,10 @@ const notifyReducer = (state = initialState, action) => {
 		case INIT_NOTIFY:
 			return{
 				...state,
-				notify: action.value
+				notify: {
+					...state.notify,
+					...action.value
+				}
 			}
 		case ADD_NOTIFY:
 			return{
@@ -36,6 +40,11 @@ const notifyReducer = (state = initialState, action) => {
 			return{
 				...state,
 				notify: removedObj
+			}
+		case SET_NOTIFY_EMPTY:
+			return{
+				...state,
+				notifyEmpty: action.value
 			}
 		default:
 			return state
@@ -63,37 +72,47 @@ export const removeNotify = (value) => {
 	}
 }
 
+export const setNotifyEmpty = (value) => {
+	return{
+		type: SET_NOTIFY_EMPTY,
+		value
+	}
+}
+
 export const initNotifyAC = (user = false) => (dispatch) => {
 	let tempNotifyObj;
 	if(user){
 		firebase.database().ref('users/' + user.uid + '/notify').once('value', snapshot => {
 			if(snapshot.val() !== null){
 				tempNotifyObj = {
-					...tempNotifyObj,
 					...snapshot.val()
 				};
 				dispatch(initNotify(tempNotifyObj));
+				dispatch(setNotifyEmpty(false));
 			}
 		});
 	}
 	firebase.database().ref('notify').on('value', snapshot => {
 		if(snapshot.val() !== null){
 			tempNotifyObj = {
-				...tempNotifyObj,
 				...snapshot.val()
 			};
 			dispatch(initNotify(tempNotifyObj));
+			dispatch(setNotifyEmpty(false));
 		}
 	});
 }
 
-export const addNotifyAC = (title, text, type, icon, userId) => (dispatch) => {
+export const addNotifyAC = (title, text, type, icon, userId, time = 5000, onlyClick = false) => (dispatch) => {
 	let notifyData = {
 		title,
 		text,
 		icon,
 		type,
-		userId
+		userId,
+		time,
+		onlyClick
+
 	}
 	let notifySnapshot;
 	firebase.database().ref('notify').on('value', snapshot => {
@@ -133,16 +152,19 @@ export const addNotifyAC = (title, text, type, icon, userId) => (dispatch) => {
 
 	userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + user.uid + '/notify').update(notifyData);
 	dispatch(addNotify(notifyData));
+	dispatch(setNotifyEmpty(false));
 }
 
 export const removeNotifyAC = (index, userId) => (dispatch) => {
 	if(userId === 'all'){
 		firebase.database().ref('notify/' + index).set({});
 		dispatch(removeNotify(index));
+		dispatch(setNotifyEmpty(true));
 	}
 	else{
 		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
 		dispatch(removeNotify(index));
+		dispatch(setNotifyEmpty(true));
 	}
 }
 

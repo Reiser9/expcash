@@ -2,15 +2,18 @@ import firebase from 'firebase/app';
 import "firebase/auth";
 import "firebase/database";
 
-import {authStateListener} from './authReducer.js';
+import {authStateListener} from './auth-reducer.js';
 import {initNotifyAC} from './notify-reducer.js';
+import {initFaqAC} from './faq-reducer.js';
 
 const SET_INIT_APP = 'SET_INIT_APP';
 const INIT_GAMES = 'INIT_GAMES';
+const SET_GAMES_PROGRESS = 'SET_GAMES_PROGRESS';
 
 const initialState = {
 	initApp: false,
-	games: []
+	games: [],
+	gamesProgress: true
 }
 
 const appReducer = (state = initialState, action) => {
@@ -24,6 +27,11 @@ const appReducer = (state = initialState, action) => {
 			return{
 				...state,
 				games: action.value
+			}
+		case SET_GAMES_PROGRESS:
+			return{
+				...state,
+				gamesProgress: action.value
 			}
         default:
             return state;
@@ -44,6 +52,13 @@ export const initGames = (value) => {
 	}
 }
 
+export const setGamesProgress = (value) => {
+	return{
+		type: SET_GAMES_PROGRESS,
+		value
+	}
+}
+
 export const initGamesAC = () => (dispatch) => {
 	firebase.database().ref('games').on('value', snapshot => {
 		let tempArr = [];
@@ -51,6 +66,7 @@ export const initGamesAC = () => (dispatch) => {
 			tempArr.push(snapshot.val()[i]);
 		}
 		dispatch(initGames(tempArr));
+		dispatch(setGamesProgress(false))
 	});
 }
 
@@ -58,8 +74,9 @@ export const initializedApp = () => (dispatch) => {
 	let auth = dispatch(authStateListener());
 	let games = dispatch(initGamesAC());
 	let notify = dispatch(initNotifyAC());
+	let faq = dispatch(initFaqAC());
 
-    Promise.all([auth, games, notify]).then(() => {
+    Promise.all([auth, games, notify, faq]).then(() => {
         dispatch(setInitApp(true));
     });
 }

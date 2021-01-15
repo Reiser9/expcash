@@ -323,6 +323,11 @@ button{
 	border: 1px solid var(--blueC);
 }
 
+.modalw__content #preloader.preloader__mini{
+	background: #22262f;
+	border-radius: 10px;
+}
+
 .modalw__cross{
 	cursor: pointer;
 	position: absolute;
@@ -421,11 +426,11 @@ button{
 	top: 2px;
 }
 
-#registerAgree{
+.modalw__checkbox{
 	display: none;
 }
 
-#registerAgree:checked + .modalw__label:after{
+.modalw__checkbox:checked + .modalw__label:after{
 	transform: scale(1);
 }
 

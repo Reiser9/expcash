@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 import './RecoverModal.css';
 
-import {setDataAC} from '../../../redux/authReducer.js';
+import {setDataAC} from '../../../redux/auth-reducer.js';
 import {recoverValid} from '../../common/validate/validate.js';
 import {modalOnAndAllOff, modalOnOrOff} from '../modalCommon.js';
 import {requestRecoveryEmail, requestInProgress} from '../../../redux/user-selectors.js';

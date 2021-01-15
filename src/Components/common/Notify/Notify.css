@@ -4,7 +4,8 @@
 	top: 0px;
 	left: 50%;
 	transform: translateX(-50%);
-	width: 370px;
+	width: 100%;
+	max-width: 370px;
 	height: auto;
 	max-height: 100vh;
 	overflow-y: auto;
@@ -99,4 +100,10 @@
 .warn{
 	border: 3px solid var(--notifyWarn);
 	color: var(--notifyWarn);
+}
+
+@media(max-width: 480px){
+	.notify{
+		max-width: 280px;
+	}
 }

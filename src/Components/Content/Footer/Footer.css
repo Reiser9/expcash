@@ -1,5 +1,4 @@
 .footer{
-	margin-top: 10rem;
 	width: 100%;
 	background: var(--sectiondarkB);
 }
@@ -13,6 +12,18 @@
 
 .footer__inner--link{
 	color: var(--lightgreyC);
+}
+
+@media(max-width: 1300px){
+	.footer .container{
+		max-width: 1020px;
+	}
+}
+
+@media(max-width: 1200px){
+	.footer .container{
+		max-width: 830px;
+	}
 }
 
 @media(max-width: 998px){
