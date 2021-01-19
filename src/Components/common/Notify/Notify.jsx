@@ -7,12 +7,18 @@ import {removeNotifyAC} from '../../../redux/notify-reducer.js';
 import './Notify.css';
 
 const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false, index, removeNotifyAC}) => {
+	let notifyTimeOut;
 	const removeNotify = () => {
 		removeNotifyAC(index, userId);
 	}
 
+	const clearNotify = () => {
+		clearTimeout(notifyTimeOut);
+		removeNotify();
+	}
+
 	if(!onlyClick){
-		setTimeout(removeNotify, time);
+		notifyTimeOut = setTimeout(removeNotify, time);
 	}
 
 	if(userId !== 'all' && userId !== user.uid){
@@ -20,7 +26,7 @@ const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false
 	}
 
 	return(
-		<div className="notify__content" onClick={removeNotify}>
+		<div className="notify__content" onClick={clearNotify}>
 		    <div className={`notify__icon--inner ${type}`}>
 		        <i className={`fas ${icon}`}></i>
 			</div>

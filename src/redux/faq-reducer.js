@@ -48,4 +48,8 @@ export const initFaqAC = (value) => (dispatch) => {
 	});
 }
 
+export const deleteFaqItem = (id) => (dispatch) => {
+	firebase.database().ref('faq/' + id).set({});
+}
+
 export default faqReducer;

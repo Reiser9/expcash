@@ -1,0 +1,34 @@
+.user__ban{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.user__ban--title{
+	font-size: 3rem;
+	font-weight: 700;
+	text-align: center;
+	width: 100%;
+}
+
+.user__ban--subtitle{
+	margin-top: 1rem;
+	font-size: 1.8rem;
+	text-align: center;
+	width: 100%;
+}
+
+.user__ban--button{
+	margin-top: 1.5rem;
+	padding: 0.8rem 1.5rem;
+	font-size: 1.6rem;
+	background: var(--sectiondarkB);
+	border: 1px solid var(--blueC);
+}
+
+.user__ban--button:hover{
+	background: var(--blueC);
+}

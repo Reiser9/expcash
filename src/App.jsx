@@ -19,13 +19,14 @@ import MobileMenu from './Components/Modal/MobileMenu/MobileMenu.jsx';
 import Preloader from './Components/common/Preloader/Preloader.jsx';
 import FavoriteGamesModal from './Components/Modal/FavoriteGamesModal/FavoriteGamesModal.jsx';
 import Notify from './Components/common/Notify/Notify.jsx';
+import UserBanned from './Components/common/UserBanned/UserBanned.jsx';
 
 import {initializedApp} from './redux/app-reducer.js';
-import {requestInitApp, requestSiteColor, requestUserSiteColor, requestHistoryModal, requestEnterModal, requestRegisterModal,
+import {requestInitApp, requestSiteColor, requestUserSiteColor, requestHistoryModal, requestEnterModal, requestRegisterModal, requestRole,
 requestRecoveryModal, requestColorPickerModal, requestFaqModal, requestAgreeModal, requestModalMenu, requestFavoriteGamesModal, requestNotify} from './redux/user-selectors.js';
 
 const App = ({colorPickerModal, registerModal, enterModal, recoveryModal, historyModal, faqModal, 
-    agreeModal, modalMenu, initializedApp, initApp, favoriteGamesModal, notify}) => {
+    agreeModal, modalMenu, initializedApp, initApp, favoriteGamesModal, notify, role}) => {
     useEffect(() => {
        initializedApp();
     }, []);
@@ -36,6 +37,9 @@ const App = ({colorPickerModal, registerModal, enterModal, recoveryModal, histor
 
     if(!initApp){
         return <Preloader />;
+    }
+    if(role === 'ban'){
+        return <UserBanned />
     }
     
     return(
@@ -78,7 +82,8 @@ const mapStateToProps = (state) => {
         agreeModal: requestAgreeModal(state),
         modalMenu: requestModalMenu(state),
         favoriteGamesModal: requestFavoriteGamesModal(state),
-        notify: requestNotify(state)
+        notify: requestNotify(state),
+        role: requestRole(state)
     }
 }
 

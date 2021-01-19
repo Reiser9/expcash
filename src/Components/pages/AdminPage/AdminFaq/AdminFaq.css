@@ -1,3 +1,23 @@
 .admin__faq{
-	
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.admin__faq--title{
+	font-size: 1.8rem;
+	margin-top: 1.5rem;
+}
+
+.admin__faq--title:first-child{
+	margin-top: 0;
+}
+
+.admin__faq--content{
+	width: 100%;
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }

@@ -82,7 +82,7 @@ export const setNotifyEmpty = (value) => {
 export const initNotifyAC = (user = false) => (dispatch) => {
 	let tempNotifyObj;
 	if(user){
-		firebase.database().ref('users/' + user.uid + '/notify').once('value', snapshot => {
+		firebase.database().ref('users/' + user.uid + '/notify').on('value', snapshot => {
 			if(snapshot.val() !== null){
 				tempNotifyObj = {
 					...snapshot.val()
@@ -150,7 +150,7 @@ export const addNotifyAC = (title, text, type, icon, userId, time = 5000, onlyCl
 		};
 	}
 
-	userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + user.uid + '/notify').update(notifyData);
+	userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + userId + '/notify').update(notifyData);
 	dispatch(addNotify(notifyData));
 	dispatch(setNotifyEmpty(false));
 }
@@ -158,14 +158,12 @@ export const addNotifyAC = (title, text, type, icon, userId, time = 5000, onlyCl
 export const removeNotifyAC = (index, userId) => (dispatch) => {
 	if(userId === 'all'){
 		firebase.database().ref('notify/' + index).set({});
-		dispatch(removeNotify(index));
-		dispatch(setNotifyEmpty(true));
 	}
 	else{
 		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
-		dispatch(removeNotify(index));
-		dispatch(setNotifyEmpty(true));
 	}
+	dispatch(removeNotify(index));
+	dispatch(setNotifyEmpty(true));
 }
 
 export default notifyReducer;

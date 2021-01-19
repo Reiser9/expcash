@@ -24,6 +24,8 @@ const SET_BALANCE = 'SET_BALANCE';
 const SET_IMG = 'SET_IMG';
 const SET_RECOREVY_EMAIL = 'SET_RECOREVY_EMAIL';
 const SET_ROLE = 'SET_ROLE';
+const SET_USERS = 'SET_USERS';
+const SET_ROLES = 'SET_ROLES';
 export let user;
 
 const initialState = {
@@ -42,6 +44,8 @@ const initialState = {
 	img: '',
 	recoveryEmail: '',
 	role: '',
+	users: {},
+	roles: {}
 }
 
 const authReducer = (state = initialState, action) => {
@@ -120,6 +124,16 @@ const authReducer = (state = initialState, action) => {
 			return{
 				...state,
 				role: action.value
+			}
+		case SET_USERS:
+			return{
+				...state,
+				users: action.value
+			}
+		case SET_ROLES:
+			return{
+				...state,
+				roles: action.value
 			}
         default:
             return state;
@@ -231,6 +245,20 @@ export const setRole = (value) => {
 	}
 }
 
+export const setUsers = (value) => {
+	return{
+		type: SET_USERS,
+		value
+	}
+}
+
+export const setRoles = (value) => {
+	return{
+		type: SET_ROLES,
+		value
+	}
+}
+
 export const setDataAC = (id, value) => (dispatch) => {
 	switch(id){
 		case 'regNick':
@@ -257,9 +285,24 @@ export const setDataAC = (id, value) => (dispatch) => {
 		case 'recoveryEmail':
 			dispatch(setRecoveryEmail(value));
 			break;
+		case 'nick':
+			dispatch(setNick(value));
+			break;
+		case 'balance':
+			dispatch(setBalance(value));
+			break;
+		case 'role':
+			dispatch(setRole(value));
+			break;
 		default:
 			break;
 	}
+}
+
+export const getRoles = (value) => async (dispatch) => {
+	await firebase.database().ref('roles').on('value', snapshot => {
+		dispatch(setRoles(snapshot.val()));
+	});
 }
 
 export const clearRedux = () => (dispatch) => {
@@ -286,6 +329,12 @@ export const getAllGames =  () => {
 	return allGames;
 }
 
+export const updateDataUser = (id, value, userId) => (dispatch) => {
+	firebase.database().ref('users/' + userId).update({
+		[id]: value
+	});
+}
+
 export const createAccount = (regEmail, regPassword, regNick) => async (dispatch) => {
 	dispatch(setInProgress(true));
 	await firebase.auth().createUserWithEmailAndPassword(regEmail, regPassword).then(user => {
@@ -294,6 +343,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	    	email: regEmail,
 	        nick: regNick,
 	        balance: 0,
+	        uid: user.user.uid,
 	        role: 'user',
 	        img: '',
 	        favoriteGames: getAllGames(),
@@ -360,6 +410,8 @@ export const authStateListener = () => async (dispatch) => {
   			userData();
   			dispatch(initSiteColorPromise(user));
   			dispatch(getDataUser());
+  			dispatch(getUsers());
+  			dispatch(getRoles());
   			dispatch(initNotifyAC(user));
   			dispatch(setAuth(true));
     	}else{
@@ -380,6 +432,12 @@ export const getDataUser = (data) => async (dispatch) => {
 		dispatch(initFavoriteGames(snapshot.val().favoriteGames));
 		dispatch(initFavoriteGamesCarousel(snapshot.val().favoriteGamesCarousel));
 		dispatch(initFavoriteGamesCount(snapshot.val().favoriteGamesCount.count));
+	});
+}
+
+export const getUsers = () => async (dispatch) => {
+	await firebase.database().ref('users/').on('value', snapshot => {
+		dispatch(setUsers(snapshot.val()));
 	});
 }
 

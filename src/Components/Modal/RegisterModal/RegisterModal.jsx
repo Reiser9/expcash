@@ -40,7 +40,7 @@ const RegisterModal = ({modalOnAndAllOff, modalOnOrOff, setDataAC, registerValid
     const createAccount = () => {
         registerValid(regNick, regPassword, regConfirmPassword, regEmail);
     }
-
+    // Не забыть капчу
     return(
         <div className="modalw register__modal">
             <div className="modalw__inner">
@@ -49,27 +49,27 @@ const RegisterModal = ({modalOnAndAllOff, modalOnOrOff, setDataAC, registerValid
                         <i className="fas fa-times"></i>
                     </div>
 
-                    <div className="modalw__title en">
+                    <div className="modalw__title">
                         регистрация
                     </div>
 
                     <div className="modal__input--wrapper">
-                        <input id="regNick" type="text" data-en="login" className="input modalw__input" 
+                        <input id="regNick" type="text" className="input modalw__input" 
                         placeholder="придумайте логин" value={regNick} onChange={handleChange}/>
                     </div>
 
                     <div className="modal__input--wrapper">
-                        <input id="regPassword" type="password" data-en="password" className="input modalw__input" 
+                        <input id="regPassword" type="password" className="input modalw__input" 
                         placeholder="придумайте пароль" value={regPassword} onChange={handleChange}/>
                     </div>
 
                     <div className="modal__input--wrapper">
-                        <input id="regConfirmPassword" type="password" data-en="confirm password" className="input modalw__input" 
+                        <input id="regConfirmPassword" type="password" className="input modalw__input" 
                         placeholder="подтвердите пароль" value={regConfirmPassword} onChange={handleChange}/>
                     </div>
                     
                     <div className="modal__input--wrapper">
-                        <input id="regEmail" type="text" data-en="email" className="input modalw__input" 
+                        <input id="regEmail" type="text" className="input modalw__input" 
                         placeholder="электронная почта" value={regEmail} onChange={handleChange}/>
                     </div>
 
@@ -79,21 +79,21 @@ const RegisterModal = ({modalOnAndAllOff, modalOnOrOff, setDataAC, registerValid
 
                     <div className="modal__input--wrapper">
                         <input checked={registerAgree} type="checkbox" className="modalw__checkbox" id="registerAgree" onChange={handleChange} />
-                        <label htmlFor="registerAgree" className="modalw__label en">
+                        <label htmlFor="registerAgree" className="modalw__label">
                             я принимаю условия и правила сайта
                         </label>
                     </div>
 
                     {registerAgree && !inProgress
-                    ? <button className="button modalw__button en" onClick={createAccount}>
+                    ? <button className="button modalw__button" onClick={createAccount}>
                         зарегистрироваться
                     </button>
-                    : <button className="button modalw__button en disable">
+                    : <button className="button modalw__button disable">
                         {inProgress ? 'загрузка..' : 'зарегистрироваться'}
                     </button>}
 
                     <div className="subbutton__links">
-                        <button className="button subbutton__link en" onClick={enterModalOn}>
+                        <button className="button subbutton__link" onClick={enterModalOn}>
                             уже есть аккаунт?
                         </button>
                     </div>

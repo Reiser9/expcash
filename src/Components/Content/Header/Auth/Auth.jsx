@@ -6,6 +6,7 @@ import './Auth.css';
 import {quitAccount} from '../../../../redux/auth-reducer.js';
 import {modalOnOrOff} from '../../../Modal/modalCommon.js';
 import {requestIsAuth, requestNick, requestImg, requestBalance} from '../../../../redux/user-selectors.js';
+import {userIcon} from '../../../../redux/app-reducer.js';
 
 const Auth = ({modalOnOrOff, isAuth, nick, img, quitAccount, balance}) => {
 	const registerOn = () => {
@@ -46,7 +47,7 @@ const Auth = ({modalOnOrOff, isAuth, nick, img, quitAccount, balance}) => {
 
 		<div onClick={quit} className="header__top--profile">
 		    <span className="site__profile--img borderr">
-		        <img src={img ? img : "https://www.movingauthority.com/static/new_design/images/user.png"} alt="Аватарка" className="user__img" />
+		        <img src={img ? img : userIcon} alt="Аватарка" className="user__img" />
 		    </span>
 
 		    {nick}

@@ -9,6 +9,7 @@ import {initFaqAC} from './faq-reducer.js';
 const SET_INIT_APP = 'SET_INIT_APP';
 const INIT_GAMES = 'INIT_GAMES';
 const SET_GAMES_PROGRESS = 'SET_GAMES_PROGRESS';
+export const userIcon = 'https://www.clipartmax.com/png/full/247-2470496_what-do-people-think-round-icon-user-png.png';
 
 const initialState = {
 	initApp: false,

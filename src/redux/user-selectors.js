@@ -121,3 +121,9 @@ export const requestGamesProgress = (state) => {
 export const requestNotifyEmpty = (state) => {
     return state.notify.notifyEmpty
 }
+export const requestUsers = (state) => {
+    return state.auth.users
+}
+export const requestRoles = (state) => {
+    return state.auth.roles
+}
