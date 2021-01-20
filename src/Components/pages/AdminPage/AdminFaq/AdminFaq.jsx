@@ -6,6 +6,7 @@ import './AdminFaq.css';
 import {requestFaq} from '../../../../redux/user-selectors.js';
 
 import FaqItem from './FaqItem/FaqItem.jsx';
+import FaqAdd from './FaqAdd/FaqAdd.jsx';
 
 const AdminFaq = ({faq}) => {
 	const allFaq = Object.keys(faq).map((key) => {
@@ -15,6 +16,8 @@ const AdminFaq = ({faq}) => {
 	return(
 		<div className="admin__faq">
 			<div className="admin__faq--title">Добавить частый вопрос</div>
+
+			<FaqAdd length={allFaq.length} />
 
 			<div className="admin__faq--title">Текущие частые вопросы</div>
 

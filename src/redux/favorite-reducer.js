@@ -141,7 +141,7 @@ export const setFavoriteGamesCarouselAC = (name, favorite, count) => (dispatch) 
 				});
 				j++;
 			}
-		})
+		});
 	}
 }
 

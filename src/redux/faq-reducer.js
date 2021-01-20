@@ -50,6 +50,23 @@ export const initFaqAC = (value) => (dispatch) => {
 
 export const deleteFaqItem = (id) => (dispatch) => {
 	firebase.database().ref('faq/' + id).set({});
+	firebase.database().ref('faq/').once('value', snapshot => {
+		let j = 0;
+		firebase.database().ref('faq/').set({});
+		for(let i in snapshot.val()){
+			firebase.database().ref('faq/').update({
+				[j]: snapshot.val()[i]
+			});
+			j++;
+		}
+	});
+}
+
+export const addFaq = (title, text, length) => (dispatch) => {
+	firebase.database().ref('faq/' + length).set({
+		title,
+		text
+	});
 }
 
 export default faqReducer;
