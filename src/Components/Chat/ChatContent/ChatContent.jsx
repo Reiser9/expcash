@@ -26,7 +26,7 @@ const ChatContent = ({getAllMessages, messages, initChat}) => {
 	return(
 		<div className="chat__inner">
 			<div className="chat__scroll">
-				{messages.map((m, id) => <ChatMessage key={`${id}_${m}`} uid={m.uid} nick={m.nick} message={m.message} img={m.img} role={m.role} />)}
+				{messages.map((m, id) => <ChatMessage key={`${id}_${m}`} uid={m.uid} nick={m.nick} message={m.message} img={m.img} role={m.role} time={m.time} />)}
 
 				{!initChat && <Preloader />}
 			</div>

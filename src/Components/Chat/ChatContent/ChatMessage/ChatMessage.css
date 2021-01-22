@@ -1,8 +1,9 @@
 .chat__message{
-	margin: 2.5rem 0;
+	margin: 2rem 0;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
+	position: relative;
 }
 
 .chat__inner--text--inner{
@@ -29,6 +30,50 @@
 .chat__inner--text{
 	word-break: break-word;
 	margin-top: .2rem;
+	padding-right: 1.5rem;
+}
+
+.chat__message--menu{
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+	opacity: 0;
+	transition: .2s linear;
+	width: 17px;
+	fill: #fff;
+	cursor: pointer;
+	z-index: 20;
+}
+
+.chat__message:hover .chat__message--menu{
+	opacity: 1;
+}
+
+.chat__message--menu--content{
+	padding: 1rem 0rem;
+	border-radius: 7px;
+	background: #16191f;
+	z-index: 30;
+	position: absolute;
+	top: 8px;
+	right: -5px;
+	width: 170px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.chat__message--menu--item{
+	width: 100%;
+	transition: .2s linear;
+	cursor: pointer;
+	padding: 0.8rem 1rem;
+	text-align: center;
+}
+
+.chat__message--menu--item:hover{
+	background: rgba(0, 0, 0, .3);
 }
 
 /* Роли */
@@ -38,6 +83,12 @@
 
 .moder{
 	color: #517cdc;
+}
+
+@media(max-width: 768px){
+	.chat__message--menu{
+		opacity: 1;
+	}
 }
 
 @media(max-width: 480px){

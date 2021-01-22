@@ -138,7 +138,8 @@ export const sendMessage = (message) => (dispatch) => {
 		message: message,
 		nick: nick,
 		uid: user.uid,
-		role: role
+		role: role,
+		time: fullDate
 	}
 
 	firebase.database().ref('chat/' + fullDate + nick).set(mes);
@@ -147,6 +148,10 @@ export const sendMessage = (message) => (dispatch) => {
 
 export const clearChatAdmin = () => {
 	firebase.database().ref('chat/').set({});
+}
+
+export const chatDeleteMessage = (time, nick) => {
+	firebase.database().ref('chat/' + time + nick).set({});
 }
 
 export default chatReducer;

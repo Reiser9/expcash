@@ -103,7 +103,7 @@ export const initNotifyAC = (user = false) => (dispatch) => {
 	});
 }
 
-export const addNotifyAC = (title, text, type, icon, userId, time = 5000, onlyClick = false) => (dispatch) => {
+export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.uid, onlyClick = false) => (dispatch) => {
 	let notifyData = {
 		title,
 		text,

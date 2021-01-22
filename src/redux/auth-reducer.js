@@ -7,7 +7,7 @@ import {modalAllOff} from '../redux/modal-reducer.js';
 import {initSiteColorPromise} from './siteColor-reducer.js';
 import {setInitApp} from './app-reducer.js';
 import {initFavoriteGames, initFavoriteGamesCarousel, initFavoriteGamesCount} from './favorite-reducer.js';
-import {initNotifyAC, initNotify} from './notify-reducer.js';
+import {initNotifyAC, initNotify, addNotifyAC} from './notify-reducer.js';
 
 const SET_AUTH = 'SET_AUTH';
 const SET_REG_NICK = 'SET_REG_NICK';
@@ -356,7 +356,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        }
 	    });
 	    dispatch(setInProgress(false));
-	    alert("Аккаунт успешно создан!");
+	    dispatch(addNotifyAC('Успешно!', 'Аккаунт создан!', 'succes', 'fa-check', 1500));
 	    dispatch(modalAllOff());
 	    inputEmpty(['regNick', 'regPassword', 'regConfirmPassword', 'regEmail'], dispatch);
 	    dispatch(setAuth(true));
@@ -374,7 +374,7 @@ export const enterAccount = (enterEmail, enterPassword) => async (dispatch) => {
 		dispatch(setInitApp(false));
 
 		dispatch(setInProgress(false));
-		alert("Вход успешно выполнен!");
+		dispatch(addNotifyAC('Успешно!', 'Вход в аккаунт выполнен!', 'succes', 'fa-check', 1500));
 		dispatch(modalAllOff());
 		inputEmpty(['enterEmail', 'enterPassword'], dispatch);
 		dispatch(setAuth(true));
@@ -391,7 +391,6 @@ export const recoveryPassword = (recoverEmail) => async (dispatch) => {
 	dispatch(setInProgress(true));
 	await firebase.auth().sendPasswordResetEmail(recoverEmail).then(function(){
 		dispatch(setInitApp(false));
-
 		alert("Сброс удался!");
 		dispatch(modalAllOff());
 		inputEmpty(['recoveryEmail'], dispatch);

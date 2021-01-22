@@ -93,7 +93,7 @@
 	box-shadow: 0 0 15px var(--blueC);
 	font-size: 1.3rem;
 	cursor: pointer;
-	z-index: 10;
+	z-index: 25;
 	transition: .2s linear;
 }
 

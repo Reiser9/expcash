@@ -21,12 +21,12 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 		e.preventDefault();
 		if(message.trim() === ''){
 			if(notifyEmpty){
-				addNotifyAC('Ошибка', 'Нельзя отправить пустое сообщение!', 'error', 'fa-times', user.uid, 2000);
+				addNotifyAC('Ошибка!', 'Нельзя отправить пустое сообщение!', 'error', 'fa-times', user.uid, 2000);
 			}
 		}
 		else if(message.trim().length > 100){
 			if(notifyEmpty){
-				addNotifyAC('Ошибка', 'Длина сообщения не может превышать 100 символов!', 'error', 'fa-times', user.uid, 2000);
+				addNotifyAC('Ошибка!', 'Длина сообщения не может превышать 100 символов!', 'error', 'fa-times', user.uid, 2000);
 			}
 		}
 		else{
@@ -42,7 +42,7 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 			}
 			else{
 				if(notifyEmpty){
-					addNotifyAC('Ошибка', 'Можно отправлять сообщение раз в 5 секунд', 'error', 'fa-times', user.uid, 2000);
+					addNotifyAC('Ошибка!', 'Можно отправлять сообщение раз в 5 секунд!', 'error', 'fa-times', user.uid, 2000);
 				}
 			}
 		}
