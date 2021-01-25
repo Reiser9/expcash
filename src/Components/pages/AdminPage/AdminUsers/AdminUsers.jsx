@@ -20,7 +20,7 @@ const AdminUsers = ({users}) => {
 
 			<div className="admin__users--content">
 				{allUsers.length === 0 && <div className="users__not--found">Пользователи не найдены</div>}
-				{allUsers.map((u, id) => <UsersItem key={`${id}_${u}`} img={u.img} nick={u.nick} email={u.email} role={u.role} uid={u.uid} balance={u.balance}/>)}
+				{allUsers.map((u, id) => <UsersItem key={`${id}_${u}`} id={id} img={u.img} nick={u.nick} email={u.email} role={u.role} uid={u.uid} balance={u.balance}/>)}
 			</div>
 		</div>
 	)

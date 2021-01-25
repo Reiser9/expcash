@@ -79,10 +79,10 @@ export const setNotifyEmpty = (value) => {
 	}
 }
 
-export const initNotifyAC = (user = false) => (dispatch) => {
+export const initNotifyAC = (userId = false) => (dispatch) => {
 	let tempNotifyObj;
-	if(user){
-		firebase.database().ref('users/' + user.uid + '/notify').on('value', snapshot => {
+	if(userId){
+		firebase.database().ref('users/' + userId.uid + '/notify').on('value', snapshot => {
 			if(snapshot.val() !== null){
 				tempNotifyObj = {
 					...snapshot.val()
@@ -103,17 +103,60 @@ export const initNotifyAC = (user = false) => (dispatch) => {
 	});
 }
 
+export const patternNotify = (number, userId) => (dispatch) => {
+	switch(number){
+		case 'notify_send_succes':
+			dispatch(addNotifyAC('Успешно', 'Уведомление отправлено', 'succes', 'fa-check', 1500));
+			break;
+		case 'remove_message':
+			dispatch(addNotifyAC('Успешно!', 'Сообщение удалено!', 'succes', 'fa-check', 1000));
+			break;
+		case 'data_save':
+			dispatch(addNotifyAC('Успешно!', 'Данные сохранены', 'succes', 'fa-check', 1000));
+			break;
+		case 'empty_message':
+			dispatch(addNotifyAC('Ошибка!', 'Нельзя отправить пустое сообщение!', 'error', 'fa-times', 2000));
+			break;
+		case 'long_message':
+			dispatch(addNotifyAC('Ошибка!', 'Длина сообщения не может превышать 100 символов!', 'error', 'fa-times', 2000));
+			break;
+		case 'limit_message':
+			dispatch(addNotifyAC('Ошибка!', 'Можно отправлять сообщение раз в 5 секунд!', 'error', 'fa-times', 2000));
+			break;
+		case 'delete_faq':
+			dispatch(addNotifyAC('Успешно!', 'Частый вопрос удален!', 'succes', 'fa-check', 1500));
+			break;
+		case 'request_area':
+			dispatch(addNotifyAC('Ошибка!', 'Все поля должны быть заполнены!', 'error', 'fa-times', 2000));
+			break;
+		case 'add_faq_succes':
+			dispatch(addNotifyAC('Успешно!', 'Частый вопрос добавлен', 'succes', 'fa-check', 1500));
+			break;
+		case 'delete_all_messages':
+			dispatch(addNotifyAC('Успешно!', 'Все сообщения в чате удалены!', 'succes', 'fa-check', 1500));
+			break;
+		case 'messages_empty':
+			dispatch(addNotifyAC('Ошибка!', 'Сообщений в чате не найдено!', 'error', 'fa-times', 1500));
+			break;
+		case 'enter_account':
+			dispatch(addNotifyAC('Успешно!', 'Вы вошли в аккаунт!', 'succes', 'fa-check', 5500, userId));
+			break;
+		default:
+			break;
+	}
+}
+
 export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.uid, onlyClick = false) => (dispatch) => {
 	let notifyData = {
 		title,
 		text,
 		icon,
 		type,
-		userId,
 		time,
+		userId,
 		onlyClick
-
 	}
+
 	let notifySnapshot;
 	firebase.database().ref('notify').on('value', snapshot => {
 		notifySnapshot = {

@@ -21,7 +21,7 @@ const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false
 		notifyTimeOut = setTimeout(removeNotify, time);
 	}
 
-	if(userId !== 'all' && userId !== user.uid){
+	if(userId !== 'all' && userId !== user?.uid){
 		return '';
 	}
 

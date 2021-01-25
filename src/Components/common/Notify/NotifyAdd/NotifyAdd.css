@@ -41,3 +41,16 @@
 	appearance: none;
 	margin-top: 1rem;
 }
+
+.only__click{
+	width: 100%;
+	padding: 0.7rem 1rem;
+	text-align: center;
+	border: 1px solid var(--blueC);
+	background: transparent;
+	margin-top: 1rem;
+}
+
+.only__click.active{
+	background: var(--blueC);
+}

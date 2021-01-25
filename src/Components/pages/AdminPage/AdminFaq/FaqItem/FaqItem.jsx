@@ -4,10 +4,12 @@ import {connect} from 'react-redux';
 import './FaqItem.css';
 
 import {deleteFaqItem} from '../../../../../redux/faq-reducer.js';
+import {patternNotify} from '../../../../../redux/notify-reducer.js';
 
-const FaqItem = ({title, text, id, deleteFaqItem}) => {
+const FaqItem = ({title, text, id, deleteFaqItem, patternNotify}) => {
 	const deleteFaq = (id) => {
 		deleteFaqItem(id);
+		patternNotify('delete_faq');
 	}
 
 	return(
@@ -33,4 +35,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {deleteFaqItem})(FaqItem);
+export default connect(mapStateToProps, {deleteFaqItem, patternNotify})(FaqItem);

@@ -4,10 +4,10 @@ import {connect} from 'react-redux';
 import './FaqAdd.css';
 
 import {addFaq} from '../../../../../redux/faq-reducer.js';
-import {addNotifyAC} from '../../../../../redux/notify-reducer.js';
+import {patternNotify} from '../../../../../redux/notify-reducer.js';
 import {user} from '../../../../../redux/auth-reducer.js';
 
-const FaqAdd = ({addFaq, addNotifyAC, length}) => {
+const FaqAdd = ({addFaq, patternNotify, length}) => {
 	const [title, setTitle] = useState('');
 	const [text, setText] = useState('');
 
@@ -26,10 +26,11 @@ const FaqAdd = ({addFaq, addNotifyAC, length}) => {
 
 	const faqAdd = () => {
 		if(!title || !text){
-			addNotifyAC('Ошибка!', 'Все поля должны быть заполнены!', 'error', 'fa-times', user.uid, 2000);
+			patternNotify('request_area');
 		}
 		else{
 			addFaq(title, text, length);
+			patternNotify('add_faq_succes');
 			setTitle('');
 			setText('');
 		}
@@ -52,4 +53,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {addFaq, addNotifyAC})(FaqAdd);
+export default connect(mapStateToProps, {addFaq, patternNotify})(FaqAdd);

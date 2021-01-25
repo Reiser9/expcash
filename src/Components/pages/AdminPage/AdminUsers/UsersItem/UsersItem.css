@@ -68,19 +68,6 @@
 	margin-top: 1rem;
 }
 
-.users__button{
-	width: 100%;
-	margin-top: 1rem;
-	padding: 0.8rem 1rem;
-	text-align: center;
-	background: var(--sectiondarkB);
-	font-size: 1.6rem;
-}
-
-.users__button:hover{
-	background: var(--blueC);
-}
-
 .ban:hover{
 	background: #e30f0f;
 }

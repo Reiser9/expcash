@@ -6,11 +6,11 @@ import './UsersItem.css';
 import NotifyAdd from '../../../../common/Notify/NotifyAdd/NotifyAdd.jsx';
 
 import {userIcon} from '../../../../../redux/app-reducer.js';
-import {addNotifyAC} from '../../../../../redux/notify-reducer.js';
-import {user, setDataAC, updateDataUser} from '../../../../../redux/auth-reducer.js';
+import {patternNotify} from '../../../../../redux/notify-reducer.js';
+import {user, updateDataUser} from '../../../../../redux/auth-reducer.js';
 import {requestRoles} from '../../../../../redux/user-selectors.js';
 
-const UsersItem = ({img, nick, email, role, uid, balance, addNotifyAC, setDataAC, updateDataUser, roles}) => {
+const UsersItem = ({img, nick, email, role, uid, balance, patternNotify, updateDataUser, roles, id}) => {
 	const [editMode, setEditMode] = useState(false);
 	const [userNick, setUserNick] = useState(nick);
 	const [userBalance, setUserBalance] = useState(balance);
@@ -21,19 +21,16 @@ const UsersItem = ({img, nick, email, role, uid, balance, addNotifyAC, setDataAC
 		setEditMode(!editMode);
 		if(editMode){
 			if(userNick !== nick){
-				setDataAC('nick', userNick);
 				updateDataUser('nick', userNick, uid);
 			}
 			if(userBalance !== balance){
-				setDataAC('balance', userBalance);
 				updateDataUser('balance', userBalance, uid);
 			}
 			if(userRole !== role){
-				setDataAC('role', userRole);
 				updateDataUser('role', userRole, uid);
 			}
 			if(!(userNick === nick && userBalance === balance && userRole === role)){
-				addNotifyAC('Успешно!', 'Данные сохранены', 'succes', 'fa-check', user.uid, 1000);
+				patternNotify('data_save');
 			}
 		}
 	}
@@ -75,7 +72,7 @@ const UsersItem = ({img, nick, email, role, uid, balance, addNotifyAC, setDataAC
 		<div className="admin__users--item">
 			{notifyMode 
 			? <>
-				<NotifyAdd notifyFrom={'userItem'} setNotifyMode={setNotifyMode} notifyFor={uid} buttonText={'отправить'} />
+				<NotifyAdd id={id} notifyFrom={'userItem'} setNotifyMode={setNotifyMode} notifyFor={uid} buttonText={'отправить'} />
 
 				<button className="button users__button ban" onClick={notifyModeFalse}>
 					отменить
@@ -129,4 +126,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {addNotifyAC, setDataAC, updateDataUser})(UsersItem);
+export default connect(mapStateToProps, {patternNotify, updateDataUser})(UsersItem);

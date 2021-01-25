@@ -7,7 +7,7 @@ import {modalAllOff} from '../redux/modal-reducer.js';
 import {initSiteColorPromise} from './siteColor-reducer.js';
 import {setInitApp} from './app-reducer.js';
 import {initFavoriteGames, initFavoriteGamesCarousel, initFavoriteGamesCount} from './favorite-reducer.js';
-import {initNotifyAC, initNotify, addNotifyAC} from './notify-reducer.js';
+import {initNotifyAC, initNotify, patternNotify} from './notify-reducer.js';
 
 const SET_AUTH = 'SET_AUTH';
 const SET_REG_NICK = 'SET_REG_NICK';
@@ -356,7 +356,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        }
 	    });
 	    dispatch(setInProgress(false));
-	    dispatch(addNotifyAC('Успешно!', 'Аккаунт создан!', 'succes', 'fa-check', 1500));
+	    //dispatch(addNotifyAC('Успешно!', 'Аккаунт создан!', 'succes', 'fa-check', 1500));
 	    dispatch(modalAllOff());
 	    inputEmpty(['regNick', 'regPassword', 'regConfirmPassword', 'regEmail'], dispatch);
 	    dispatch(setAuth(true));
@@ -374,7 +374,7 @@ export const enterAccount = (enterEmail, enterPassword) => async (dispatch) => {
 		dispatch(setInitApp(false));
 
 		dispatch(setInProgress(false));
-		dispatch(addNotifyAC('Успешно!', 'Вход в аккаунт выполнен!', 'succes', 'fa-check', 1500));
+		dispatch(patternNotify('enter_account', user.user.uid));
 		dispatch(modalAllOff());
 		inputEmpty(['enterEmail', 'enterPassword'], dispatch);
 		dispatch(setAuth(true));
@@ -414,6 +414,7 @@ export const authStateListener = () => async (dispatch) => {
   			dispatch(initNotifyAC(user));
   			dispatch(setAuth(true));
     	}else{
+    		userData();
     		dispatch(initSiteColorPromise());
     		dispatch(initNotifyAC());
     		dispatch(setAuth(false));
@@ -423,14 +424,22 @@ export const authStateListener = () => async (dispatch) => {
 
 export const getDataUser = (data) => async (dispatch) => {
 	await firebase.database().ref('users/' + user.uid).on('value', snapshot => {
-		dispatch(setNick(snapshot.val().nick));
-		dispatch(setEmail(snapshot.val().email));
-		dispatch(setBalance(snapshot.val().balance));
-		dispatch(setImg(snapshot.val().img));
-		dispatch(setRole(snapshot.val().role));
-		dispatch(initFavoriteGames(snapshot.val().favoriteGames));
-		dispatch(initFavoriteGamesCarousel(snapshot.val().favoriteGamesCarousel));
-		dispatch(initFavoriteGamesCount(snapshot.val().favoriteGamesCount.count));
+		if(user){
+			if(snapshot.val() == null){
+				dispatch(quitAccount());
+				// Можно передавать сообщение по какой причине был выполнен выход с аккаунта
+			}
+			else{
+				dispatch(setNick(snapshot.val().nick));
+				dispatch(setEmail(snapshot.val().email));
+				dispatch(setBalance(snapshot.val().balance));
+				dispatch(setImg(snapshot.val().img));
+				dispatch(setRole(snapshot.val().role));
+				dispatch(initFavoriteGames(snapshot.val().favoriteGames));
+				dispatch(initFavoriteGamesCarousel(snapshot.val().favoriteGamesCarousel));
+				dispatch(initFavoriteGamesCount(snapshot.val().favoriteGamesCount.count));
+			}
+		}
 	});
 }
 

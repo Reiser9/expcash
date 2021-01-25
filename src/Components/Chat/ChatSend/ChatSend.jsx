@@ -7,9 +7,9 @@ import './ChatSend.css';
 
 import {requestIsAuth, requestMessage, requestInitChat, requestNotifyEmpty} from '../../../redux/user-selectors.js';
 import {setMessageAC, sendMessage} from '../../../redux/chat-reducer.js';
-import {addNotifyAC} from '../../../redux/notify-reducer.js';
+import {patternNotify} from '../../../redux/notify-reducer.js';
 
-const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown, addNotifyAC, notifyEmpty}) => {
+const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown, patternNotify, notifyEmpty}) => {
 	const [isDelay, setIsDelay] = useState(false);
 
 	const handleChange = (e) => {
@@ -21,12 +21,12 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 		e.preventDefault();
 		if(message.trim() === ''){
 			if(notifyEmpty){
-				addNotifyAC('Ошибка!', 'Нельзя отправить пустое сообщение!', 'error', 'fa-times', user.uid, 2000);
+				patternNotify('empty_message');
 			}
 		}
 		else if(message.trim().length > 100){
 			if(notifyEmpty){
-				addNotifyAC('Ошибка!', 'Длина сообщения не может превышать 100 символов!', 'error', 'fa-times', user.uid, 2000);
+				patternNotify('long_message');
 			}
 		}
 		else{
@@ -42,7 +42,7 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 			}
 			else{
 				if(notifyEmpty){
-					addNotifyAC('Ошибка!', 'Можно отправлять сообщение раз в 5 секунд!', 'error', 'fa-times', user.uid, 2000);
+					patternNotify('limit_message');
 				}
 			}
 		}
@@ -100,4 +100,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {sendMessage, setMessageAC, addNotifyAC})(ChatSend);
+export default connect(mapStateToProps, {sendMessage, setMessageAC, patternNotify})(ChatSend);

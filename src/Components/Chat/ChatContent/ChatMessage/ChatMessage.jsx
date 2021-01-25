@@ -7,9 +7,9 @@ import './ChatMessage.css';
 import {userIcon} from '../../../../redux/app-reducer.js';
 import {chatDeleteMessage} from '../../../../redux/chat-reducer.js';
 import {requestRole} from '../../../../redux/user-selectors.js';
-import {addNotifyAC} from '../../../../redux/notify-reducer.js';
+import {patternNotify} from '../../../../redux/notify-reducer.js';
 
-const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, addNotifyAC}) => {
+const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, patternNotify}) => {
 	const [editMessageMenu, setEditMessageMenu] = useState(false);
 
 	const messageMenu = () => {
@@ -19,7 +19,7 @@ const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, ad
 	const deleteMessage = () => {
 		chatDeleteMessage(time, nick);
 		setEditMessageMenu(false);
-		addNotifyAC('Успешно!', 'Сообщение удалено!', 'succes', 'fa-check', 1000);
+		patternNotify('remove_message');
 	}
 
 	useEffect(() => {
@@ -81,4 +81,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {addNotifyAC})(ChatMessage);
+export default connect(mapStateToProps, {patternNotify})(ChatMessage);

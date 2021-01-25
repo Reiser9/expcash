@@ -18,7 +18,7 @@ const UserBanned = ({quitAccount}) => {
 
 		    <div className="user__ban--subtitle">
 		    	Если вы не знаете причину, по которой вас заблокировали, или не согласны с решением, то вы можете написать 
-		    	<a href="mailto:expcash.sup@gmail.com" className="user__ban--mail">нам на почту</a>
+		    	<a href="mailto:expcash.sup@gmail.com" className="user__ban--mail blue"> нам на почту</a>
 		    </div>
 
 		    <button className="button user__ban--button" onClick={quitBanAccount}>

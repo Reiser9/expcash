@@ -4,10 +4,18 @@ import {connect} from 'react-redux';
 import './AdminChat.css';
 
 import {clearChatAdmin} from '../../../../redux/chat-reducer.js';
+import {patternNotify} from '../../../../redux/notify-reducer.js';
+import {requestMessages} from '../../../../redux/user-selectors.js';
 
-const AdminChat = () => {
+const AdminChat = ({messages, patternNotify}) => {
 	const clearChat = () => {
-		clearChatAdmin();
+		if(messages.length > 0){
+			clearChatAdmin();
+			patternNotify('delete_all_messages');
+		}
+		else{
+			patternNotify('messages_empty');
+		}
 	}
 
 	return(
@@ -19,8 +27,8 @@ const AdminChat = () => {
 
 const mapStateToProps = (state) => {
 	return{
-
+		messages: requestMessages(state)
 	}
 }
 
-export default connect(mapStateToProps, {})(AdminChat);
+export default connect(mapStateToProps, {patternNotify})(AdminChat);

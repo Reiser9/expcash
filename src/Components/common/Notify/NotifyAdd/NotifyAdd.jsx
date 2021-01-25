@@ -4,10 +4,10 @@ import $ from 'jquery';
 
 import './NotifyAdd.css';
 
-import {addNotifyAC} from '../../../../redux/notify-reducer.js';
+import {addNotifyAC, patternNotify} from '../../../../redux/notify-reducer.js';
 import {user} from '../../../../redux/auth-reducer.js';
 
-const NotifyAdd = ({buttonText, notifyFor, addNotifyAC, notifyFrom, setNotifyMode}) => {
+const NotifyAdd = ({buttonText, notifyFor, id, patternNotify, addNotifyAC, notifyFrom, setNotifyMode}) => {
 	const [title, setTitle] = useState('');
 	const [text, setText] = useState('');
 	const [type, setType] = useState('warn');
@@ -16,18 +16,14 @@ const NotifyAdd = ({buttonText, notifyFor, addNotifyAC, notifyFrom, setNotifyMod
 	const [onlyClick, setOnlyClick] = useState(false);
 
 	const addNotify = (userId) => {
-		addNotifyAC(title, text, type, icon, userId, time, onlyClick);
+		addNotifyAC(title, text, type, icon, time, userId, onlyClick);
 		if(notifyFrom === 'userItem'){
-			addNotifyAC('Успешно', 'Уведомление успешно отправлено', 'succes', 'fa-check', user.uid, 1500);
+			patternNotify('notify_send_succes');
 			setNotifyMode(false);
 		}
 	}
 
 	const handleChange = ({target: {value, id}}) => {
-		let onlyClickBool;
-		if(id === 'onlyClick'){
-			onlyClickBool = $("#onlyClick").prop("checked");
-		}
 		switch(id){
 			case 'notify__title':
 				setTitle(value);
@@ -37,9 +33,6 @@ const NotifyAdd = ({buttonText, notifyFor, addNotifyAC, notifyFrom, setNotifyMod
 				break;
 			case 'notify__time':
 				setTime(value);
-				break;
-			case 'onlyClick':
-				setOnlyClick(onlyClickBool);
 				break;
 			default:
 				break;
@@ -66,6 +59,10 @@ const NotifyAdd = ({buttonText, notifyFor, addNotifyAC, notifyFrom, setNotifyMod
 		}
 	}
 
+	const onlyClickChange = () => {
+		setOnlyClick(!onlyClick);
+	}
+
 	return(
 		<>
 			<input id="notify__title" className="input notify__input" value={title} onChange={handleChange} placeholder="Заголовок"/>
@@ -81,10 +78,9 @@ const NotifyAdd = ({buttonText, notifyFor, addNotifyAC, notifyFrom, setNotifyMod
 
 			<input id='notify__time' className="input notify__input" value={time} onChange={handleChange} type="number" placeholder="Таймер(ms)"/>
 
-			<input checked={onlyClick} type="checkbox" className="modalw__checkbox" id="onlyClick" onChange={handleChange}/>
-			<label htmlFor="onlyClick" className="modalw__label">
-			    Выключать только по клику
-			</label>
+			<button className={`button only__click ${onlyClick && 'active'}`} onClick={onlyClickChange}>
+				Выключать только по клику
+			</button>
 
 			<button className="button users__button" onClick={() => addNotify(notifyFor)}>{buttonText}</button>
 		</>
@@ -97,4 +93,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {addNotifyAC})(NotifyAdd);
+export default connect(mapStateToProps, {addNotifyAC, patternNotify})(NotifyAdd);

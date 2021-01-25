@@ -11,7 +11,7 @@ const AdminNotify = ({}) => {
 	return(
 		<div className="admin__notify">
 			<div className="admin__notify--add--inner">
-				<NotifyAdd notifyFor={'all'} buttonText={'Уведомление для всех'} />
+				<NotifyAdd id={'notify__all'} notifyFor={'all'} buttonText={'Уведомление для всех'} />
 			</div>
 		</div>
 	)
