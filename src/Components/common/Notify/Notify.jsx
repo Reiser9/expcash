@@ -6,10 +6,10 @@ import {removeNotifyAC} from '../../../redux/notify-reducer.js';
 
 import './Notify.css';
 
-const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false, index, removeNotifyAC}) => {
+const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false, index, removeNotifyAC, number}) => {
 	let notifyTimeOut;
 	const removeNotify = () => {
-		removeNotifyAC(index, userId);
+		removeNotifyAC(index, userId, number);
 	}
 
 	const clearNotify = () => {
@@ -21,7 +21,7 @@ const Notify = ({title, text, icon, type, userId, time = 5000, onlyClick = false
 		notifyTimeOut = setTimeout(removeNotify, time);
 	}
 
-	if(userId !== 'all' && userId !== user?.uid){
+	if(userId !== 'all' && userId !== user?.uid && userId !== 'redux'){
 		return '';
 	}
 

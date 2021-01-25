@@ -41,6 +41,7 @@ export const setFaqProgress = (value) => {
 	}
 }
 
+// Инициализировать частые вопросы
 export const initFaqAC = (value) => (dispatch) => {
 	firebase.database().ref('faq').on('value', snapshot => {
 		dispatch(initFaq(snapshot.val()));
@@ -48,6 +49,7 @@ export const initFaqAC = (value) => (dispatch) => {
 	});
 }
 
+// Удалить частый вопрос, передав id
 export const deleteFaqItem = (id) => (dispatch) => {
 	firebase.database().ref('faq/' + id).set({});
 	firebase.database().ref('faq/').once('value', snapshot => {
@@ -62,6 +64,7 @@ export const deleteFaqItem = (id) => (dispatch) => {
 	});
 }
 
+// Добавить частый вопрос, передав заголовок, текст и id
 export const addFaq = (title, text, length) => (dispatch) => {
 	firebase.database().ref('faq/' + length).set({
 		title,

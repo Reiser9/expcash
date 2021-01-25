@@ -145,6 +145,7 @@ export const setFavoriteGamesCarouselAC = (name, favorite, count) => (dispatch) 
 	}
 }
 
+// Получить ключ по значению
 const getKeyByValue = (object, value) => {
 	return Object.keys(object).find(key => object[key] === value);
 }
@@ -153,6 +154,7 @@ export const initFavoriteGamesCarousel = (value) => (dispatch) => {
 	dispatch(setFavoriteGamesCarousel(value));
 }
 
+// Изменить счетчик избранных игр в карусели
 export const setCountFavoriteGamesAC = (prevCount, count) => (dispatch) => {
 	let c = parseInt(prevCount) + count;
 	firebase.database().ref('users/' + user.uid + '/favoriteGamesCount/').set({
@@ -161,6 +163,7 @@ export const setCountFavoriteGamesAC = (prevCount, count) => (dispatch) => {
 	dispatch(setCountFavoriteGames(c));
 }
 
+// Переместить вправо избранную игру при редактировании карусели
 export const swapRightAC = (id, name, favoriteGamesCarousel) => (dispatch) => {
 	newFavoriteGamesCarousel = {
 		...favoriteGamesCarousel,
@@ -171,6 +174,7 @@ export const swapRightAC = (id, name, favoriteGamesCarousel) => (dispatch) => {
 	dispatch(swap(newFavoriteGamesCarousel));
 }
 
+// Переместить влево избранную игру при редактировании карусели
 export const swapLeftAC = (id, name, favoriteGamesCarousel) => (dispatch) => {
 	newFavoriteGamesCarousel = {
 		...favoriteGamesCarousel,

@@ -34,6 +34,7 @@ export const initSiteColorAC = (color, nameColor) => (dispatch) => {
 	dispatch(initSiteColor(color, nameColor));
 }
 
+// Инициализация цветовой гаммы взависимости от того, авторизован ли пользователь
 export const initSiteColorPromise = (user = false) => async (dispatch) => {
 	let firebaseRef, auth;
 	if(user){

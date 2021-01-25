@@ -79,8 +79,15 @@ export const setNotifyEmpty = (value) => {
 	}
 }
 
+export const getTimeId = () => {
+	let time = new Date();
+	return time.getTime();
+}
+
+// Инициализация уведомлений, принимает true/false, авторизован ли пользователь
 export const initNotifyAC = (userId = false) => (dispatch) => {
 	let tempNotifyObj;
+	// Если авторизован, тогда берем уведомления, если есть, с аккаунта пользователя
 	if(userId){
 		firebase.database().ref('users/' + userId.uid + '/notify').on('value', snapshot => {
 			if(snapshot.val() !== null){
@@ -92,6 +99,7 @@ export const initNotifyAC = (userId = false) => (dispatch) => {
 			}
 		});
 	}
+	// Берем в любом случае уведомления, если есть, у всех
 	firebase.database().ref('notify').on('value', snapshot => {
 		if(snapshot.val() !== null){
 			tempNotifyObj = {
@@ -103,7 +111,52 @@ export const initNotifyAC = (userId = false) => (dispatch) => {
 	});
 }
 
-export const patternNotify = (number, userId) => (dispatch) => {
+// Заголовок, текст, тип(ошибка, успех, инфо), иконка уведомления, время после которого уведомление удалится, удалять только по нажатию,
+// добавить уведомление только в редакс(нужно для уведомлений анонимного характера: при выходе с аккаунта, заходе, регистрации, сбросе)
+export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.uid, onlyClick = false, onlyRedux = false) => (dispatch) => {
+	// Формируем объект уведомления, взяв за id время в ms, что бы оно никак не повторялось
+	let notifyData = {
+		[getTimeId()]: {
+			title,
+			text,
+			icon,
+			type,
+			time,
+			userId,
+			onlyClick,
+			id: getTimeId()
+		}
+	}
+
+	// Уведомления могут быть анонимные, без использования базы данных, только для redux
+	if(!onlyRedux){
+		userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + userId + '/notify').update(notifyData);
+	}
+
+	// Добавляем уведомление и делаем уведомления не пустыми
+	dispatch(addNotify(notifyData));
+	dispatch(setNotifyEmpty(false));
+}
+
+// Принимаем id уведомления, uid пользователя, либо иное(all, redux), и кол-во уведомлений всего
+export const removeNotifyAC = (index, userId, number) => (dispatch) => {
+	// Если уведомление для всех
+	if(userId === 'all'){
+		firebase.database().ref('notify/' + index).set({});
+	}
+	// Если уведомления анонимные, из redux
+	else if(userId !== 'redux'){
+		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
+	}
+	// Удаляем уведомление
+	dispatch(removeNotify(index));
+	number - 1 === 0 && dispatch(setNotifyEmpty(true));
+}
+
+// Шаблон уведомления, принимает тип уведомления
+// Заголовок, текст, тип, иконка, время(необязательно, дефолт 5000 = 5с), uid, либо (all, redux), необязательно, дефолт user.uid,
+// Удалять только по клику(необязательно, дефолт false), только для redux(необязательно, дефолт false)
+export const patternNotify = (number) => (dispatch) => {
 	switch(number){
 		case 'notify_send_succes':
 			dispatch(addNotifyAC('Успешно', 'Уведомление отправлено', 'succes', 'fa-check', 1500));
@@ -139,74 +192,23 @@ export const patternNotify = (number, userId) => (dispatch) => {
 			dispatch(addNotifyAC('Ошибка!', 'Сообщений в чате не найдено!', 'error', 'fa-times', 1500));
 			break;
 		case 'enter_account':
-			dispatch(addNotifyAC('Успешно!', 'Вы вошли в аккаунт!', 'succes', 'fa-check', 5500, userId));
+			dispatch(addNotifyAC('Успешно!', 'Вы вошли в аккаунт!', 'succes', 'fa-check', 2000, 'redux', false, true));
+			break;
+		case 'create_account':
+			dispatch(addNotifyAC('Успешно!', 'Вы создали аккаунт!', 'succes', 'fa-check', 2000, 'redux', false, true));
+			break;
+		case 'recovery_password':
+			dispatch(addNotifyAC('Пароль сброшен!', 'В скором времени вам поступит письмо на почту с подробной информацией!', 'succes', 'fa-check', 5000, 'redux', false, true));
+			break;
+		case 'quit_account':
+			dispatch(addNotifyAC('Успешно!', 'Вы вышли с аккаунта!', 'succes', 'fa-check', 2000, 'redux', false, true));
+			break;
+		case 'quit_account_delete':
+			dispatch(addNotifyAC('Ошибка!', 'Аккаунт был удален!', 'error', 'fa-times', 3000, 'redux', false, true));
 			break;
 		default:
 			break;
 	}
-}
-
-export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.uid, onlyClick = false) => (dispatch) => {
-	let notifyData = {
-		title,
-		text,
-		icon,
-		type,
-		time,
-		userId,
-		onlyClick
-	}
-
-	let notifySnapshot;
-	firebase.database().ref('notify').on('value', snapshot => {
-		notifySnapshot = {
-			...notifySnapshot,
-			...snapshot.val()
-		}
-	});
-
-	firebase.database().ref('users/' + user.uid + '/notify').on('value', snapshot => {
-		notifySnapshot = {
-			...notifySnapshot,
-			...snapshot.val()
-		}
-	});
-
-	if(Object.keys(notifySnapshot).length !== 0){
-		let ind;
-		for(let i in notifySnapshot){
-			ind = i;
-		}
-		notifyData = {
-			[parseInt(ind) + 1]: {
-				...notifyData,
-				id: parseInt(ind) + 1
-			}
-		}
-	}
-	else{
-		notifyData = {
-			0: {
-				...notifyData,
-				id: 0
-			}
-		};
-	}
-
-	userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + userId + '/notify').update(notifyData);
-	dispatch(addNotify(notifyData));
-	dispatch(setNotifyEmpty(false));
-}
-
-export const removeNotifyAC = (index, userId) => (dispatch) => {
-	if(userId === 'all'){
-		firebase.database().ref('notify/' + index).set({});
-	}
-	else{
-		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
-	}
-	dispatch(removeNotify(index));
-	dispatch(setNotifyEmpty(true));
 }
 
 export default notifyReducer;

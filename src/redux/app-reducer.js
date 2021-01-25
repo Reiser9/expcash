@@ -60,6 +60,7 @@ export const setGamesProgress = (value) => {
 	}
 }
 
+// Инициализация игр сайта
 export const initGamesAC = () => (dispatch) => {
 	firebase.database().ref('games').on('value', snapshot => {
 		let tempArr = [];
@@ -71,6 +72,7 @@ export const initGamesAC = () => (dispatch) => {
 	});
 }
 
+// Инициализация приложения
 export const initializedApp = () => (dispatch) => {
 	let auth = dispatch(authStateListener());
 	let games = dispatch(initGamesAC());

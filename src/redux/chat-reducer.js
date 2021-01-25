@@ -87,6 +87,7 @@ export const setInitChatAC = (value) => (dispatch) => {
 	dispatch(setInitChat(value));
 }
 
+// Получить все сообщения
 export const getAllMessages = () => (dispatch) => {
 	firebase.database().ref('chat').limitToLast(75).on('value', snapshot => {
 		let tempMessages = [];
@@ -98,6 +99,7 @@ export const getAllMessages = () => (dispatch) => {
 	});
 }
 
+// Получить дату, для образования id сообщения
 export const getDate = () => {
 	let TimezoneOffset = 3;
 	let localTime = new Date(); 
@@ -123,6 +125,7 @@ export const getDate = () => {
 	+ date.getFullYear() + "" + hours + "" + minutes + "" + seconds + "" + miliseconds;
 }
 
+// Отправить сообщение
 export const sendMessage = (message) => (dispatch) => {
 	let fullDate = getDate();
 	
@@ -146,10 +149,12 @@ export const sendMessage = (message) => (dispatch) => {
 	dispatch(setMessage(''));
 }
 
+// Удалить все сообщения из чата
 export const clearChatAdmin = () => {
 	firebase.database().ref('chat/').set({});
 }
 
+// Удалить сообщение из чата, передав время и ник
 export const chatDeleteMessage = (time, nick) => {
 	firebase.database().ref('chat/' + time + nick).set({});
 }

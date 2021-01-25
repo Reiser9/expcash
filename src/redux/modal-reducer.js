@@ -135,6 +135,7 @@ export const setFavoriteGamesModalOn = (value) => {
 	}
 }
 
+// Открыть/закрыть то или иное модальное окно, передав id окна и значение(false/true)
 export const modalOpenAC = (id, value) => (dispatch) => {
 	switch(id){
 		case 'setEnterModalOn':
@@ -169,6 +170,7 @@ export const modalOpenAC = (id, value) => (dispatch) => {
 	}
 }
 
+// Закрыть все модальные окна
 export const modalAllOff = () => (dispatch) => {
 	dispatch(setEnterModalOn(false));
 	dispatch(setRegisterModalOn(false));

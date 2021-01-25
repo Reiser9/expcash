@@ -1,8 +1,14 @@
 import React from 'react';
 
+import './PaymentPage.css';
+
+import PrivatePageWrapper from '../PrivatePageWrapper.jsx';
+
 const PaymentPage = () => {
 	return(
-		<div>Кошелек</div>
+		<PrivatePageWrapper>
+			<div>Кошелек</div>
+		</PrivatePageWrapper>
 	)
 }
 

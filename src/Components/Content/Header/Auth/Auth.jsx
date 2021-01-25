@@ -1,24 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 import './Auth.css';
 
-import {quitAccount} from '../../../../redux/auth-reducer.js';
 import {modalOnOrOff} from '../../../Modal/modalCommon.js';
 import {requestIsAuth, requestNick, requestImg, requestBalance} from '../../../../redux/user-selectors.js';
 import {userIcon} from '../../../../redux/app-reducer.js';
 
-const Auth = ({modalOnOrOff, isAuth, nick, img, quitAccount, balance}) => {
+const Auth = ({modalOnOrOff, isAuth, nick, img, balance}) => {
 	const registerOn = () => {
 		modalOnOrOff('setRegisterModalOn', true);
 	}
 
 	const enterOn = () => {
 		modalOnOrOff('setEnterModalOn', true);
-	}
-
-	const quit = () => {
-		quitAccount();
 	}
 
 	if(!isAuth){
@@ -45,13 +41,13 @@ const Auth = ({modalOnOrOff, isAuth, nick, img, quitAccount, balance}) => {
 		    </span>
 		</div>
 
-		<div onClick={quit} className="header__top--profile">
+		<NavLink to={'/profile'} className="header__top--profile">
 		    <span className="site__profile--img borderr">
 		        <img src={img ? img : userIcon} alt="Аватарка" className="user__img" />
 		    </span>
 
 		    {nick}
-		</div>
+		</NavLink>
 		</>
 	)
 }
@@ -65,4 +61,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {quitAccount, modalOnOrOff})(Auth);
+export default connect(mapStateToProps, {modalOnOrOff})(Auth);

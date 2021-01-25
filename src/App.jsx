@@ -47,7 +47,7 @@ const App = ({colorPickerModal, registerModal, enterModal, recoveryModal, histor
             {notifyArr.length > 0
             && <div className="notify">
                 <div className="notify__inner">
-                    {notifyArr.map((n, id) => <Notify index={n.id} key={`${id}_${n}`} title={n.title} text={n.text}
+                    {notifyArr.map((n, id) => <Notify number={notifyArr.length} index={n.id} key={`${id}_${n}`} title={n.title} text={n.text}
                     icon={n.icon} type={n.type} userId={n.userId} time={n.time} onlyClick={n.onlyClick}/>)}
                 </div>
             </div>}

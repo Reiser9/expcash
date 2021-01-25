@@ -1,9 +1,30 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-const ProfilePage = () => {
+import './ProfilePage.css';
+
+import {quitAccount} from '../../../redux/auth-reducer.js';
+
+import PrivatePageWrapper from '../PrivatePageWrapper.jsx';
+
+const ProfilePage = ({quitAccount}) => {
+	const quit = () => {
+		quitAccount('quit_account');
+	}
+
 	return(
-		<div>Профиль</div>
+		<PrivatePageWrapper>
+			<div className="profile__inner">
+				<button className="button" onClick={quit}>Выйти</button>
+			</div>
+		</PrivatePageWrapper>
 	)
 }
 
-export default ProfilePage;
+const mapStateToProps = (state) => {
+	return{
+		
+	}
+}
+
+export default connect(mapStateToProps, {quitAccount})(ProfilePage);

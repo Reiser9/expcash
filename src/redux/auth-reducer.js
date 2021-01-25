@@ -299,12 +299,14 @@ export const setDataAC = (id, value) => (dispatch) => {
 	}
 }
 
+// Получить все роли на сайте(user, admin, moder и т.д)
 export const getRoles = (value) => async (dispatch) => {
 	await firebase.database().ref('roles').on('value', snapshot => {
 		dispatch(setRoles(snapshot.val()));
 	});
 }
 
+// Очистить redux после выхода с аккаунта
 export const clearRedux = () => (dispatch) => {
 	dispatch(setEmail(''));
 	dispatch(setNick(''));
@@ -314,6 +316,7 @@ export const clearRedux = () => (dispatch) => {
 	dispatch(initNotify({}));
 }
 
+// Получить все игры сайта(expDuel, expBattler и прочее)
 export const getAllGames =  () => {
 	let allGames = {};
 	firebase.database().ref('games').on('value', snapshot => {
@@ -329,16 +332,19 @@ export const getAllGames =  () => {
 	return allGames;
 }
 
+// Изменить какое-то поле пользователя, передаем название поля, к примеру nick, значение и uid пользователя, которому нужно что-то поменять
 export const updateDataUser = (id, value, userId) => (dispatch) => {
 	firebase.database().ref('users/' + userId).update({
 		[id]: value
 	});
 }
 
+// Регистрация аккаунта, передаем email, пароль, ник
 export const createAccount = (regEmail, regPassword, regNick) => async (dispatch) => {
 	dispatch(setInProgress(true));
 	await firebase.auth().createUserWithEmailAndPassword(regEmail, regPassword).then(user => {
 		dispatch(setInitApp(false));
+
 	    firebase.database().ref('users/' + user.user.uid).set({
 	    	email: regEmail,
 	        nick: regNick,
@@ -355,12 +361,12 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        	userNameColor: 'blue'
 	        }
 	    });
-	    dispatch(setInProgress(false));
-	    //dispatch(addNotifyAC('Успешно!', 'Аккаунт создан!', 'succes', 'fa-check', 1500));
+	    dispatch(patternNotify('create_account'));
 	    dispatch(modalAllOff());
 	    inputEmpty(['regNick', 'regPassword', 'regConfirmPassword', 'regEmail'], dispatch);
+	    
+	    dispatch(setInProgress(false));
 	    dispatch(setAuth(true));
-
 	    dispatch(setInitApp(true));
 	}).catch(error => {
 		errorCatch(error.code, 'auth/email-already-in-use', 'regEmail', 'Адрес электронной почты занят');
@@ -368,30 +374,32 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	});
 }
 
+// Вход в аккаунт, передаем email и пароль для входа
 export const enterAccount = (enterEmail, enterPassword) => async (dispatch) => {
 	dispatch(setInProgress(true));
 	await firebase.auth().signInWithEmailAndPassword(enterEmail, enterPassword).then(user => {
 		dispatch(setInitApp(false));
 
-		dispatch(setInProgress(false));
-		dispatch(patternNotify('enter_account', user.user.uid));
+		dispatch(patternNotify('enter_account'));
 		dispatch(modalAllOff());
 		inputEmpty(['enterEmail', 'enterPassword'], dispatch);
-		dispatch(setAuth(true));
 
+		dispatch(setAuth(true));
+		dispatch(setInProgress(false));
 		dispatch(setInitApp(true));
 	}).catch(error => {
-		errorCatch(error.code, 'auth/user-not-found', 'enterEmail', 'Данный электронный адрес не зарегистрирован');
+		errorCatch(error.code, 'auth/user-not-found', 'enterEmail', 'Неверный адрес электронной почты или пароль');
 		errorCatch(error.code, 'auth/wrong-password', 'enterEmail', 'Неверный адрес электронной почты или пароль');
 		dispatch(setInProgress(false));
 	});
 }
 
+// Восстановление пароля, передаем email, на который нужно выслать письмо
 export const recoveryPassword = (recoverEmail) => async (dispatch) => {
 	dispatch(setInProgress(true));
 	await firebase.auth().sendPasswordResetEmail(recoverEmail).then(function(){
 		dispatch(setInitApp(false));
-		alert("Сброс удался!");
+		dispatch(patternNotify('recovery_password'));
 		dispatch(modalAllOff());
 		inputEmpty(['recoveryEmail'], dispatch);
 		dispatch(setInProgress(false));
@@ -403,32 +411,36 @@ export const recoveryPassword = (recoverEmail) => async (dispatch) => {
 	});
 }
 
+// Херня, которая следит за авторизованностью пользователя
 export const authStateListener = () => async (dispatch) => {
   	await firebase.auth().onAuthStateChanged(user => {
   		if(user){
-  			userData();
-  			dispatch(initSiteColorPromise(user));
-  			dispatch(getDataUser());
-  			dispatch(getUsers());
-  			dispatch(getRoles());
-  			dispatch(initNotifyAC(user));
-  			dispatch(setAuth(true));
-    	}else{
-    		userData();
-    		dispatch(initSiteColorPromise());
-    		dispatch(initNotifyAC());
-    		dispatch(setAuth(false));
-    	}
+	  		userData();
+	  		dispatch(initSiteColorPromise(user));
+	  		dispatch(getDataUser());
+	 		dispatch(getUsers());
+	  		dispatch(getRoles());
+	 		dispatch(initNotifyAC(user));
+	 		dispatch(setAuth(true));
+	   	}else{
+	    	userData();
+	    	dispatch(initSiteColorPromise());
+	   		dispatch(initNotifyAC());
+	   		dispatch(setAuth(false));
+	    }
   	});
 }
 
-export const getDataUser = (data) => async (dispatch) => {
+// Получаем данные пользователя
+export const getDataUser = () => async (dispatch) => {
 	await firebase.database().ref('users/' + user.uid).on('value', snapshot => {
+		// Проверяем, если пользователь авторизован, тогда получаем данные о нем
 		if(user){
+			// Если данных нет, либо аккаунт пользователя удалили, тогда выходим с аккаунта с пометкой "Аккаунт удален"
 			if(snapshot.val() == null){
-				dispatch(quitAccount());
-				// Можно передавать сообщение по какой причине был выполнен выход с аккаунта
+				dispatch(quitAccount('quit_account_delete'));
 			}
+			// Иначе записываем данные пользователя в redux
 			else{
 				dispatch(setNick(snapshot.val().nick));
 				dispatch(setEmail(snapshot.val().email));
@@ -443,34 +455,37 @@ export const getDataUser = (data) => async (dispatch) => {
 	});
 }
 
+// Получаем всех пользователей, для работы с ними
 export const getUsers = () => async (dispatch) => {
 	await firebase.database().ref('users/').on('value', snapshot => {
 		dispatch(setUsers(snapshot.val()));
 	});
 }
 
-export const quitAccount = () => async (dispatch) => {
+// Выходим с аккаунта, передать можно пометку почему мы вышли с него(добровольно, либо аккаунт удалили)
+export const quitAccount = (leave) => async (dispatch) => {
 	dispatch(setInitApp(false));
 	await firebase.auth().signOut().then(function() {
-	    alert("Вышли!");
+	    dispatch(patternNotify(leave));
+	    // Чистим redux, что бы не было багов, якобы мы авторизованы
 	    dispatch(clearRedux());
-	    dispatch(setInitApp(true));
-	}).catch(function(error){
-	    alert(error.code);
 	    dispatch(setInitApp(true));
 	});
 }
 
+// Функция обертки полей с ошибками, передаем ошибку, код ошибки, id поля и текст, который хотим увидеть на ошибке(поля авторизации, регистрации)
 const errorCatch = (error, errorCode, id, text) => {
 	if(error === errorCode){errorWrapper(id, text)}
 }
 
+// После удачного входа, обнуляем значения полей
 const inputEmpty = (arr, dispatch) => {
 	for(let i = 0; i < arr.length; i++){
 		dispatch(setDataAC(arr[i], ''));
 	}
 }
 
+// Храним в переменной user данные об авторизованном пользователе, что бы в любой момент обратиться к ней
 export const userData = () => {
 	user = firebase.auth().currentUser;
 }
