@@ -26,6 +26,8 @@ const SET_RECOREVY_EMAIL = 'SET_RECOREVY_EMAIL';
 const SET_ROLE = 'SET_ROLE';
 const SET_USERS = 'SET_USERS';
 const SET_ROLES = 'SET_ROLES';
+const CHANGE_NICK_PRICE = 'CHANGE_NICK_PRICE';
+const SET_VERIFICATE_EMAIL = 'SET_VERIFICATE_EMAIL';
 export let user;
 
 const initialState = {
@@ -44,6 +46,8 @@ const initialState = {
 	img: '',
 	recoveryEmail: '',
 	role: '',
+	changeNickPrice: '',
+	verificateEmail: false,
 	users: {},
 	roles: {}
 }
@@ -134,6 +138,16 @@ const authReducer = (state = initialState, action) => {
 			return{
 				...state,
 				roles: action.value
+			}
+		case CHANGE_NICK_PRICE:
+			return{
+				...state,
+				changeNickPrice: action.value
+			}
+		case SET_VERIFICATE_EMAIL:
+			return{
+				...state,
+				verificateEmail: action.value
 			}
         default:
             return state;
@@ -259,6 +273,20 @@ export const setRoles = (value) => {
 	}
 }
 
+export const setChangeNickPrice = (value) => {
+	return{
+		type: CHANGE_NICK_PRICE,
+		value
+	}
+}
+
+export const setVerificateEmail = (value) => {
+	return{
+		type: SET_VERIFICATE_EMAIL,
+		value
+	}
+}
+
 export const setDataAC = (id, value) => (dispatch) => {
 	switch(id){
 		case 'regNick':
@@ -297,6 +325,21 @@ export const setDataAC = (id, value) => (dispatch) => {
 		default:
 			break;
 	}
+}
+
+// Записываем верификацию email в бд
+export const verificateEmailSucces = () => {
+	let verEmail = user.emailVerified;
+	firebase.database().ref('users/' + user.uid).update({
+		verificateEmail: verEmail
+	});
+}
+
+// Получаем прочие данные
+export const getDataSite = () => async (dispatch) => {
+	await firebase.database().ref('data').on('value', snapshot => {
+		dispatch(setChangeNickPrice(snapshot.val().changeNickPrice));
+	});
 }
 
 // Получить все роли на сайте(user, admin, moder и т.д)
@@ -339,6 +382,25 @@ export const updateDataUser = (id, value, userId) => (dispatch) => {
 	});
 }
 
+// Подтвердить почту
+export const sendVerificateEmail = () => async (dispatch) => {
+	await user.sendEmailVerification().then(function() {
+		dispatch(patternNotify('send_mail_verification_succes'));
+	}).catch(() => {
+		dispatch(patternNotify('send_mail_verification_error'));
+	});
+}
+
+// Изменить почту
+export const editEmail = (editEmail) => async (dispatch) => {
+	await user.updateEmail(editEmail).then(function(){
+		dispatch(updateDataUser('email', editEmail, user.uid));
+		dispatch(patternNotify('edit_email_succes'));
+	}).catch(() => {
+		dispatch(patternNotify('invalid_email'));
+	});
+}
+
 // Регистрация аккаунта, передаем email, пароль, ник
 export const createAccount = (regEmail, regPassword, regNick) => async (dispatch) => {
 	dispatch(setInProgress(true));
@@ -353,6 +415,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        role: 'user',
 	        img: '',
 	        favoriteGames: getAllGames(),
+	        verificateEmail: false,
 	        favoriteGamesCount: {
 	        	count: 0
 	        },
@@ -414,16 +477,17 @@ export const recoveryPassword = (recoverEmail) => async (dispatch) => {
 // Херня, которая следит за авторизованностью пользователя
 export const authStateListener = () => async (dispatch) => {
   	await firebase.auth().onAuthStateChanged(user => {
+  		userData();
+  		dispatch(getUsers());
+  		dispatch(getRoles());
+  		dispatch(getDataSite());
   		if(user){
-	  		userData();
 	  		dispatch(initSiteColorPromise(user));
 	  		dispatch(getDataUser());
-	 		dispatch(getUsers());
-	  		dispatch(getRoles());
 	 		dispatch(initNotifyAC(user));
 	 		dispatch(setAuth(true));
+	 		dispatch(verificateEmailSucces());
 	   	}else{
-	    	userData();
 	    	dispatch(initSiteColorPromise());
 	   		dispatch(initNotifyAC());
 	   		dispatch(setAuth(false));
@@ -450,14 +514,22 @@ export const getDataUser = () => async (dispatch) => {
 				dispatch(initFavoriteGames(snapshot.val().favoriteGames));
 				dispatch(initFavoriteGamesCarousel(snapshot.val().favoriteGamesCarousel));
 				dispatch(initFavoriteGamesCount(snapshot.val().favoriteGamesCount.count));
+				dispatch(setVerificateEmail(snapshot.val().verificateEmail));
 			}
 		}
 	});
 }
 
+// Сменить пароль
+export const editPassword = (password) => (dispatch) => {
+	user.updatePassword(password).then(function() {
+		dispatch(patternNotify('edit_password_succes'));
+	});
+}
+
 // Получаем всех пользователей, для работы с ними
 export const getUsers = () => async (dispatch) => {
-	await firebase.database().ref('users/').on('value', snapshot => {
+	await firebase.database().ref('users').on('value', snapshot => {
 		dispatch(setUsers(snapshot.val()));
 	});
 }
@@ -470,6 +542,14 @@ export const quitAccount = (leave) => async (dispatch) => {
 	    // Чистим redux, что бы не было багов, якобы мы авторизованы
 	    dispatch(clearRedux());
 	    dispatch(setInitApp(true));
+	});
+}
+
+export const deleteAccount = () => async (dispatch) => {
+	dispatch(setInitApp(false));
+	await user.delete().then(function(){
+		firebase.database().ref('users/' + user.uid).set({});
+		dispatch(setInitApp(true));
 	});
 }
 

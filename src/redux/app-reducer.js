@@ -5,6 +5,7 @@ import "firebase/database";
 import {authStateListener} from './auth-reducer.js';
 import {initNotifyAC} from './notify-reducer.js';
 import {initFaqAC} from './faq-reducer.js';
+import {initSiteColorPromise} from './siteColor-reducer.js';
 
 const SET_INIT_APP = 'SET_INIT_APP';
 const INIT_GAMES = 'INIT_GAMES';
@@ -78,8 +79,9 @@ export const initializedApp = () => (dispatch) => {
 	let games = dispatch(initGamesAC());
 	let notify = dispatch(initNotifyAC());
 	let faq = dispatch(initFaqAC());
+	let siteColor = dispatch(initSiteColorPromise());
 
-    Promise.all([auth, games, notify, faq]).then(() => {
+    Promise.all([auth, games, notify, faq, siteColor]).then(() => {
         dispatch(setInitApp(true));
     });
 }

@@ -127,3 +127,12 @@ export const requestUsers = (state) => {
 export const requestRoles = (state) => {
     return state.auth.roles
 }
+export const requestEmail = (state) => {
+    return state.auth.email
+}
+export const requestChangeNickPrice = (state) => {
+    return state.auth.changeNickPrice
+}
+export const requestVerificateEmail = (state) => {
+    return state.auth.verificateEmail
+}

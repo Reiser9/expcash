@@ -5,7 +5,6 @@ import $ from 'jquery';
 import './NotifyAdd.css';
 
 import {addNotifyAC, patternNotify} from '../../../../redux/notify-reducer.js';
-import {user} from '../../../../redux/auth-reducer.js';
 
 const NotifyAdd = ({buttonText, notifyFor, id, patternNotify, addNotifyAC, notifyFrom, setNotifyMode}) => {
 	const [title, setTitle] = useState('');

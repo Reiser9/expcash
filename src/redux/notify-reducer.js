@@ -204,7 +204,40 @@ export const patternNotify = (number) => (dispatch) => {
 			dispatch(addNotifyAC('Успешно!', 'Вы вышли с аккаунта!', 'succes', 'fa-check', 2000, 'redux', false, true));
 			break;
 		case 'quit_account_delete':
-			dispatch(addNotifyAC('Ошибка!', 'Аккаунт был удален!', 'error', 'fa-times', 3000, 'redux', false, true));
+			dispatch(addNotifyAC('Внимание!', 'Аккаунт был удален!', 'info', 'fa-exclamation', 3000, 'redux', false, true));
+			break;
+		case 'not_money':
+			dispatch(addNotifyAC('Ошибка!', 'Недостаточно средств для смены ника!', 'error', 'fa-times', 2000));
+			break;
+		case 'nick_changed':
+			dispatch(addNotifyAC('Успешно!', 'Ник изменен!', 'succes', 'fa-check', 2000));
+			break;
+		case 'same_nick':
+			dispatch(addNotifyAC('Ошибка!', 'Ник не изменен!', 'error', 'fa-times', 2000));
+			break;
+		case 'dont_same_password':
+			dispatch(addNotifyAC('Ошибка!', 'Пароли не совпадают!', 'error', 'fa-times', 2000));
+			break;
+		case 'short_password':
+			dispatch(addNotifyAC('Ошибка!', 'Пароли не может быть менее 8 символов!', 'error', 'fa-times', 2000));
+			break;
+		case 'edit_password_succes':
+			dispatch(addNotifyAC('Успешно!', 'Пароль изменен!', 'succes', 'fa-check', 2000));
+			break;
+		case 'send_mail_verification_succes':
+			dispatch(addNotifyAC('Успешно!', 'Письмо с подтверждением отправлено!', 'succes', 'fa-check', 2000));
+			break;
+		case 'send_mail_verification_error':
+			dispatch(addNotifyAC('Ошибка!', 'Нельзя так часто, попробуйте позже!', 'error', 'fa-times', 2000));
+			break;
+		case 'same_email':
+			dispatch(addNotifyAC('Ошибка!', 'Почта не изменена!', 'error', 'fa-times', 2000));
+			break;
+		case 'edit_email_succes':
+			dispatch(addNotifyAC('Успешно!', 'Почта изменена!', 'succes', 'fa-check', 2000));
+			break;
+		case 'invalid_email':
+			dispatch(addNotifyAC('Ошибка!', 'Почта введена некорректно!', 'error', 'fa-times', 2000));
 			break;
 		default:
 			break;
