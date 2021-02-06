@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import "firebase/auth";
 import "firebase/database";
+import "firebase/storage";
 
 import {errorWrapper} from '../Components/common/validate/validate.js';
 import {modalAllOff} from '../redux/modal-reducer.js';
@@ -8,6 +9,7 @@ import {initSiteColorPromise} from './siteColor-reducer.js';
 import {setInitApp} from './app-reducer.js';
 import {initFavoriteGames, initFavoriteGamesCarousel, initFavoriteGamesCount} from './favorite-reducer.js';
 import {initNotifyAC, initNotify, patternNotify} from './notify-reducer.js';
+import {getDate} from '../redux/chat-reducer.js';
 
 const SET_AUTH = 'SET_AUTH';
 const SET_REG_NICK = 'SET_REG_NICK';
@@ -322,15 +324,40 @@ export const setDataAC = (id, value) => (dispatch) => {
 		case 'role':
 			dispatch(setRole(value));
 			break;
+		case 'img':
+			dispatch(setImg(value));
+			break;
 		default:
 			break;
 	}
 }
 
+export const uploadImg = (file, setProgress) => (dispatch) => {
+	let time = getDate();
+	let storageRef = firebase.storage().ref('avatars/' + time).put(file);
+
+	storageRef.on('state_changed', 
+		snapshot => {
+			const progress = Math.round((snapshot.bytesTransferred - snapshot.totalBytes) * 100);
+			setProgress(progress);
+		},
+		error => {
+			console.log(error);
+		},
+		() => {
+			firebase.storage().ref('avatars').child(time).getDownloadURL().then(url => {
+				firebase.database().ref('users/' + user.uid).update({
+					img: url
+				});
+			});
+		}
+	);
+}
+
 // Записываем верификацию email в бд
-export const verificateEmailSucces = () => {
+export const verificateEmailSucces = async () => {
 	let verEmail = user.emailVerified;
-	firebase.database().ref('users/' + user.uid).update({
+	await firebase.database().ref('users/' + user.uid).update({
 		verificateEmail: verEmail
 	});
 }
@@ -360,9 +387,9 @@ export const clearRedux = () => (dispatch) => {
 }
 
 // Получить все игры сайта(expDuel, expBattler и прочее)
-export const getAllGames =  () => {
+export const getAllGames = async () => {
 	let allGames = {};
-	firebase.database().ref('games').on('value', snapshot => {
+	await firebase.database().ref('games').on('value', snapshot => {
 		let counter = 0;
 		for(let i in snapshot.val()){
 			allGames[counter] = {
@@ -376,10 +403,18 @@ export const getAllGames =  () => {
 }
 
 // Изменить какое-то поле пользователя, передаем название поля, к примеру nick, значение и uid пользователя, которому нужно что-то поменять
-export const updateDataUser = (id, value, userId) => (dispatch) => {
-	firebase.database().ref('users/' + userId).update({
+export const updateDataUser = (id, value, userId) => async (dispatch) => {
+	await firebase.database().ref('users/' + userId).update({
 		[id]: value
 	});
+}
+
+// Изменить данные сайта
+export const updateData = (id, value) => async (dispatch) => {
+	await firebase.database().ref('data').update({
+		[id]: value
+	});
+	dispatch(patternNotify('data_save'));
 }
 
 // Подтвердить почту
@@ -414,6 +449,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        uid: user.user.uid,
 	        role: 'user',
 	        img: '',
+	        imgId: '',
 	        favoriteGames: getAllGames(),
 	        verificateEmail: false,
 	        favoriteGamesCount: {
@@ -521,9 +557,14 @@ export const getDataUser = () => async (dispatch) => {
 }
 
 // Сменить пароль
-export const editPassword = (password) => (dispatch) => {
-	user.updatePassword(password).then(function() {
+export const editPassword = (password, setPas, setPasAgain) => async (dispatch) => {
+	await user.updatePassword(password).then(function() {
+		setPas('');
+		setPasAgain('');
 		dispatch(patternNotify('edit_password_succes'));
+	}).catch(() => {
+		dispatch(patternNotify('password_security'));
+		dispatch(quitAccount('quit_account'));
 	});
 }
 

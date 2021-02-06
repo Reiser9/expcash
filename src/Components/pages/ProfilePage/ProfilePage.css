@@ -33,6 +33,28 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
+}
+
+.profile__info--edit--img--inner{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background: rgba(0, 0, 0, .3);
+	transition: .2s linear;
+	opacity: 0;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile__info--img--inner:hover .profile__info--edit--img--inner{
+	opacity: 1;
 }
 
 .profile__info--img{
@@ -73,7 +95,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	margin-top: 2rem;
+	margin-top: 1rem;
 }
 
 .profile__edit--item:first-child,
@@ -111,4 +133,43 @@
 
 .profile__varificate--email{
 	background: var(--blueC);
+}
+
+#ava{
+	display: none;
+}
+
+.profile__info--edit--img--label{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.profile__info--edit--img--label--inner{
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	background: var(--blueC);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.avatar__load{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 1.6rem;
+	background: rgba(0, 0, 0, .7);
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	text-align: center;
 }

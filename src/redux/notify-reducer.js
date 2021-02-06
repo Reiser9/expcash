@@ -239,6 +239,18 @@ export const patternNotify = (number) => (dispatch) => {
 		case 'invalid_email':
 			dispatch(addNotifyAC('Ошибка!', 'Почта введена некорректно!', 'error', 'fa-times', 2000));
 			break;
+		case 'same_price':
+			dispatch(addNotifyAC('Ошибка!', 'Цена не изменена!', 'error', 'fa-times', 2000));
+			break;
+		case 'password_security':
+			dispatch(addNotifyAC('Внимание!', 'В целях безопасности авторизируйтесь еще раз!', 'info', 'fa-exclamation', 5000));
+			break;
+		case 'avatar_error':
+			dispatch(addNotifyAC('Ошибка!', 'Возникла какая-то хрень!', 'error', 'fa-times', 2000));
+			break;
+		case 'avatar_succes':
+			dispatch(addNotifyAC('Успешно!', 'Аватарка успешно загружена!', 'succes', 'fa-check', 2000));
+			break;
 		default:
 			break;
 	}
