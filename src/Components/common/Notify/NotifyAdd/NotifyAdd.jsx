@@ -20,6 +20,8 @@ const NotifyAdd = ({buttonText, notifyFor, id, patternNotify, addNotifyAC, notif
 			patternNotify('notify_send_succes');
 			setNotifyMode(false);
 		}
+		setTitle('');
+		setText('');
 	}
 
 	const handleChange = ({target: {value, id}}) => {
@@ -75,7 +77,7 @@ const NotifyAdd = ({buttonText, notifyFor, id, patternNotify, addNotifyAC, notif
 				<option value="succes">Успех</option>
 			</select>
 
-			<input id='notify__time' className="input notify__input" value={time} onChange={handleChange} type="number" placeholder="Таймер(ms)"/>
+			{!onlyClick && <input id='notify__time' className="input notify__input" value={time} onChange={handleChange} type="number" placeholder="Таймер(ms)"/>}
 
 			<button className={`button only__click ${onlyClick && 'active'}`} onClick={onlyClickChange}>
 				Выключать только по клику

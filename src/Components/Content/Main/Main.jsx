@@ -1,6 +1,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 
+import ReCAPTCHA from "react-google-recaptcha";
+
 import './Main.css';
 
 const Main = () => {

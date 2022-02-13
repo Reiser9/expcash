@@ -7,7 +7,7 @@ import FavoriteItem from '../FavoriteItem/FavoriteItem.jsx';
 import OwlCarousel from 'react-owl-carousel2';
 import 'react-owl-carousel2/lib/styles.css';
 
-const FavoriteCarousel = ({favoriteGamesCarousel, favoriteGamesModalOn, editMode, swapRight, swapLeft}) => {
+const FavoriteCarousel = ({favoriteGamesKey, favoriteGamesCarousel, favoriteGamesModalOn, editMode, swapRight, swapLeft, count}) => {
 	const options = {
 	    margin: 35,
 	    nav: true,
@@ -25,13 +25,9 @@ const FavoriteCarousel = ({favoriteGamesCarousel, favoriteGamesModalOn, editMode
 	    }
 	}
 
-	const favoriteGamesKey = Object.keys(favoriteGamesCarousel).map((key) => {
-		return favoriteGamesCarousel[key];
-	});
-
 	return(
 		<OwlCarousel options={options} className="main__like--games--carousel owl-carousel">
-		   	{favoriteGamesKey.map((name, id) => <FavoriteItem favoriteGamesCarousel={favoriteGamesCarousel} swapRight={swapRight} swapLeft={swapLeft} count={favoriteGamesKey.length} id={id} editMode={editMode} key={`${id}_${name}`} 
+		   	{favoriteGamesKey.map((name, id) => <FavoriteItem favoriteGamesCarousel={favoriteGamesCarousel} swapRight={swapRight} swapLeft={swapLeft} count={count} id={id} editMode={editMode} key={`${id}_${name}`} 
 		   	gameName={name}/>)}
 
 		    <div className="main__like--games--item add__like--games" onClick={favoriteGamesModalOn}>

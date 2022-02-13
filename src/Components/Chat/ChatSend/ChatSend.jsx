@@ -1,20 +1,29 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import $ from 'jquery';
-import {user} from '../../../redux/auth-reducer.js'
+import {user} from '../../../redux/auth-reducer.js';
 
 import './ChatSend.css';
 
-import {requestIsAuth, requestMessage, requestInitChat, requestNotifyEmpty} from '../../../redux/user-selectors.js';
+import {requestIsAuth, requestMessage, requestInitChat, requestNotifyEmpty, requestRole} from '../../../redux/user-selectors.js';
 import {setMessageAC, sendMessage} from '../../../redux/chat-reducer.js';
 import {patternNotify} from '../../../redux/notify-reducer.js';
 
-const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown, patternNotify, notifyEmpty}) => {
+const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMessageCount, messageCount, chatDown, patternNotify, notifyEmpty, role}) => {
 	const [isDelay, setIsDelay] = useState(false);
 
 	const handleChange = (e) => {
 		let text = e.target.value;
 		setMessageAC(text);
+	}
+
+	const send = () => {
+		sendMessage(message);
+		setMessageCount(messageCount + 1);
+		if(!chatDown){
+			$(".chat__inner").animate({scrollTop: 9999},{duration: 350});
+		    return false;
+		}
 	}
 
 	const sendMessageButton = (e) => {
@@ -30,19 +39,19 @@ const ChatSend = ({isAuth, message, setMessageAC, sendMessage, initChat, setMess
 			}
 		}
 		else{
-			if(!isDelay){
-				setIsDelay(true);
-				setTimeout(() => setIsDelay(false), 5000);
-				sendMessage(message);
-				setMessageCount(messageCount + 1);
-				if(!chatDown){
-					$(".chat__inner").animate({scrollTop: 9999},{duration: 350});
-	            	return false;
-				}
+			if(role === 'admin'){
+				send();
 			}
 			else{
-				if(notifyEmpty){
-					patternNotify('limit_message');
+				if(!isDelay){
+					setIsDelay(true);
+					setTimeout(() => setIsDelay(false), 5000);
+					send();
+				}
+				else{
+					if(notifyEmpty){
+						patternNotify('limit_message');
+					}
 				}
 			}
 		}
@@ -96,7 +105,8 @@ const mapStateToProps = (state) => {
 		isAuth: requestIsAuth(state),
 		message: requestMessage(state),
 		initChat: requestInitChat(state),
-		notifyEmpty: requestNotifyEmpty(state)
+		notifyEmpty: requestNotifyEmpty(state),
+		role: requestRole(state)
 	}
 }
 

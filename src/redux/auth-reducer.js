@@ -332,34 +332,33 @@ export const setDataAC = (id, value) => (dispatch) => {
 	}
 }
 
-export const uploadImg = (file, setProgress) => (dispatch) => {
-	let time = getDate();
-	let storageRef = firebase.storage().ref('avatars/' + time).put(file);
-
-	storageRef.on('state_changed', 
-		snapshot => {
-			const progress = Math.round((snapshot.bytesTransferred - snapshot.totalBytes) * 100);
-			setProgress(progress);
-		},
-		error => {
-			console.log(error);
-		},
-		() => {
-			firebase.storage().ref('avatars').child(time).getDownloadURL().then(url => {
-				firebase.database().ref('users/' + user.uid).update({
-					img: url
-				});
-			});
-		}
-	);
-}
-
 // Записываем верификацию email в бд
 export const verificateEmailSucces = async () => {
 	let verEmail = user.emailVerified;
 	await firebase.database().ref('users/' + user.uid).update({
 		verificateEmail: verEmail
 	});
+}
+
+// Удалить все сообщения пользователя
+export const deleteAllMessage = (userId) => (dispatch) => {
+	dispatch(updateDataChatMessage('role', 'ban', userId, true));
+}
+
+// Заблокировать пользователя
+export const banUser = (userId) => async (dispatch) => {
+	await firebase.database().ref('users/' + userId).update({
+		role: 'ban'
+	});
+	dispatch(updateDataChatMessage('role', 'ban', userId));
+}
+
+// Разблокировать пользователя
+export const unbanUser = (userId) => async (dispatch) => {
+	await firebase.database().ref('users/' + userId).update({
+		role: 'user'
+	});
+	dispatch(updateDataChatMessage('role', 'user', userId));
 }
 
 // Получаем прочие данные
@@ -402,6 +401,42 @@ export const getAllGames = async () => {
 	return allGames;
 }
 
+// Изменить во всех сообщениях в чате данные(человек поменял ник, во всех его сообщениях он изменится)
+export const updateDataChatMessage = (dataUpdate, dataValueUpdate, userUid = user.uid, deleteAll = false) => async (dispatch) => {
+	await firebase.database().ref('chat').once('value', snapshot => {
+		for(let i in snapshot.val()){
+			if(snapshot.val()[i].uid === userUid){
+				if(deleteAll){
+					firebase.database().ref('chat/' + snapshot.val()[i].time + snapshot.val()[i].uid).set({});
+				}
+				else{
+					firebase.database().ref('chat/' + snapshot.val()[i].time + snapshot.val()[i].uid).update({
+						[dataUpdate]: dataValueUpdate
+					});
+				}
+			}
+		}
+	});
+}
+
+// Изменить ник игрока
+export const updateNick = (newNick, prevNick, balance, changeNickPrice) => (dispatch) => {
+	if(newNick !== prevNick){
+		if(balance >= changeNickPrice){
+			dispatch(updateDataUser('nick', newNick, user.uid));
+			dispatch(updateDataUser('balance', balance - changeNickPrice, user.uid));
+			dispatch(patternNotify('nick_changed'));
+			dispatch(updateDataChatMessage('nick', newNick));
+		}
+		else{
+			dispatch(patternNotify('not_money'));
+		}
+	}
+	else{
+		dispatch(patternNotify('same_nick'));
+	}
+}
+
 // Изменить какое-то поле пользователя, передаем название поля, к примеру nick, значение и uid пользователя, которому нужно что-то поменять
 export const updateDataUser = (id, value, userId) => async (dispatch) => {
 	await firebase.database().ref('users/' + userId).update({
@@ -427,13 +462,61 @@ export const sendVerificateEmail = () => async (dispatch) => {
 }
 
 // Изменить почту
-export const editEmail = (editEmail) => async (dispatch) => {
-	await user.updateEmail(editEmail).then(function(){
-		dispatch(updateDataUser('email', editEmail, user.uid));
-		dispatch(patternNotify('edit_email_succes'));
-	}).catch(() => {
-		dispatch(patternNotify('invalid_email'));
+export const editEmail = (editEmail, prevEmail) => async (dispatch) => {
+	if(editEmail !== prevEmail){
+		await user.updateEmail(editEmail).then(function(){
+			dispatch(updateDataUser('email', editEmail, user.uid));
+			dispatch(patternNotify('edit_email_succes'));
+		}).catch((err) => {
+			switch(err.code){
+				case 'auth/requires-recent-login':
+					dispatch(patternNotify('password_security'));
+					dispatch(quitAccount('quit_account'));
+					break;
+				case 'auth/invalid-email':
+					dispatch(patternNotify('invalid_email'));
+					break;
+				default:
+					break;
+			}
+		});
+	}
+	else{
+		dispatch(patternNotify('same_email'));
+	}
+}
+
+export const deleteImgUser = () => async (dispatch) => {
+	await firebase.database().ref('users/' + user.uid).once('value', snapshot => {
+		if(snapshot.val().img !== ''){
+			firebase.storage().ref('avatars').child(snapshot.val().imgId).delete().then(() => {});
+		}
 	});
+}
+
+// Изменить фотографию пользователя
+export const editUserImg = (photo, setAvaProgress) => async (dispatch) => {
+	let time = getDate();
+	let storageRef = firebase.storage().ref('avatars/' + time).put(photo);
+
+	await storageRef.on('state_changed', 
+		snapshot => {
+			setAvaProgress(true);
+		},
+		error => {},
+		() => {
+			firebase.storage().ref('avatars').child(time).getDownloadURL().then(url => {
+				dispatch(deleteImgUser());
+				firebase.database().ref('users/' + user.uid).update({
+					img: url,
+					imgId: time
+				});
+				dispatch(updateDataChatMessage('img', url));
+				setAvaProgress(false);
+				dispatch(patternNotify('avatar_succes'));
+			});
+		}
+	);
 }
 
 // Регистрация аккаунта, передаем email, пароль, ник
@@ -460,6 +543,7 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	        	userNameColor: 'blue'
 	        }
 	    });
+	    
 	    dispatch(patternNotify('create_account'));
 	    dispatch(modalAllOff());
 	    inputEmpty(['regNick', 'regPassword', 'regConfirmPassword', 'regEmail'], dispatch);
@@ -467,8 +551,8 @@ export const createAccount = (regEmail, regPassword, regNick) => async (dispatch
 	    dispatch(setInProgress(false));
 	    dispatch(setAuth(true));
 	    dispatch(setInitApp(true));
-	}).catch(error => {
-		errorCatch(error.code, 'auth/email-already-in-use', 'regEmail', 'Адрес электронной почты занят');
+	}).catch(err => {
+		errorCatch(err.code, 'auth/email-already-in-use', 'regEmail', 'Адрес электронной почты занят');
 		dispatch(setInProgress(false));
 	});
 }
@@ -486,9 +570,9 @@ export const enterAccount = (enterEmail, enterPassword) => async (dispatch) => {
 		dispatch(setAuth(true));
 		dispatch(setInProgress(false));
 		dispatch(setInitApp(true));
-	}).catch(error => {
-		errorCatch(error.code, 'auth/user-not-found', 'enterEmail', 'Неверный адрес электронной почты или пароль');
-		errorCatch(error.code, 'auth/wrong-password', 'enterEmail', 'Неверный адрес электронной почты или пароль');
+	}).catch(err => {
+		errorCatch(err.code, 'auth/user-not-found', 'enterEmail', 'Неверный адрес электронной почты или пароль');
+		errorCatch(err.code, 'auth/wrong-password', 'enterEmail', 'Неверный адрес электронной почты или пароль');
 		dispatch(setInProgress(false));
 	});
 }
@@ -504,8 +588,8 @@ export const recoveryPassword = (recoverEmail) => async (dispatch) => {
 		dispatch(setInProgress(false));
 
 		dispatch(setInitApp(true));
-	}).catch(function(error) {
-		errorCatch(error.code, 'auth/user-not-found', 'recoveryEmail', 'Пользователь не найден');
+	}).catch(err => {
+		errorCatch(err.code, 'auth/user-not-found', 'recoveryEmail', 'Пользователь не найден');
 		dispatch(setInProgress(false));
 	});
 }
@@ -557,15 +641,25 @@ export const getDataUser = () => async (dispatch) => {
 }
 
 // Сменить пароль
-export const editPassword = (password, setPas, setPasAgain) => async (dispatch) => {
-	await user.updatePassword(password).then(function() {
-		setPas('');
-		setPasAgain('');
-		dispatch(patternNotify('edit_password_succes'));
-	}).catch(() => {
-		dispatch(patternNotify('password_security'));
-		dispatch(quitAccount('quit_account'));
-	});
+export const editPassword = (password, passwordAgain, setPas, setPasAgain) => async (dispatch) => {
+	if(password === passwordAgain){
+		if(password.length < 8){
+			dispatch(patternNotify('short_password'));
+		}
+		else{
+			await user.updatePassword(password).then(function() {
+				setPas('');
+				setPasAgain('');
+				dispatch(patternNotify('edit_password_succes'));
+			}).catch(() => {
+				dispatch(patternNotify('password_security'));
+				dispatch(quitAccount('quit_account'));
+			});
+		}
+	}
+	else{
+		dispatch(patternNotify('dont_same_password'));
+	}
 }
 
 // Получаем всех пользователей, для работы с ними

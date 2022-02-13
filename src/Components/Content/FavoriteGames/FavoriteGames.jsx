@@ -21,20 +21,24 @@ const FavoriteGames = ({isAuth, favoriteGamesCarousel, modalOnOrOff, swapRightAC
 		setEditMode(!editMode);
 	}
 
+	const favoriteGamesKey = Object.keys(favoriteGamesCarousel).map((key) => {
+		return favoriteGamesCarousel[key];
+	});
+
 	return(
 		<div className="main__like--games--inner">
 		    <div className="main__like--games--title">
-		        <span className="en">ваши</span> <span className="blue en">любимые</span> <span className="en">игры</span>
+		        <span>ваши</span> <span className="blue">любимые</span> <span>игры</span>
 		    </div>
 		    {isAuth
 		    	? <><div className="main__like--games--slider">
-		            <FavoriteCarousel editMode={editMode} setEditMode={setEditMode} favoriteGamesCarousel={favoriteGamesCarousel} 
-		           	favoriteGamesModalOn={favoriteGamesModalOn} swapRight={swapRightAC} swapLeft={swapLeftAC} />
+		            <FavoriteCarousel editMode={editMode} setEditMode={setEditMode} count={favoriteGamesKey.length} favoriteGamesKey={favoriteGamesKey}
+		            favoriteGamesCarousel={favoriteGamesCarousel} favoriteGamesModalOn={favoriteGamesModalOn} swapRight={swapRightAC} swapLeft={swapLeftAC} />
 		        </div>
 
 		        <div className="main__edit--game">
-		            <button className="button main__button--edit en" onClick={onEditMode}>
-		                {editMode ? 'готово' : 'редактировать'}
+		            <button className="button main__button--edit" onClick={onEditMode}>
+		                {(editMode && favoriteGamesKey.length > 1) ? 'готово' : 'редактировать'}
 		            </button>
 		        </div></>
 		        : <div className="main__favorite--games--log">

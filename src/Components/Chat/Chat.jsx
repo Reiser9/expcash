@@ -13,6 +13,10 @@ const Chat = () => {
     const [chatDown, setChatDown] = useState(false);
 
     useEffect(() => {
+        chat();
+    }, []);
+
+    useEffect(() => {
         var ch = $(".chat__inner"),
             div_sh = $(".chat__scroll")[0].scrollHeight,
             div_h = ch.height();
@@ -35,8 +39,6 @@ const Chat = () => {
                 setMessageCount(0);
             }
         });
-
-        chat();
     }, [chatDown]);
 
     return(

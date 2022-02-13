@@ -8,8 +8,9 @@ import {userIcon} from '../../../../redux/app-reducer.js';
 import {chatDeleteMessage} from '../../../../redux/chat-reducer.js';
 import {requestRole} from '../../../../redux/user-selectors.js';
 import {patternNotify} from '../../../../redux/notify-reducer.js';
+import {banUser, unbanUser, deleteAllMessage} from '../../../../redux/auth-reducer.js';
 
-const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, patternNotify}) => {
+const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, patternNotify, banUser, unbanUser, deleteAllMessage}) => {
 	const [editMessageMenu, setEditMessageMenu] = useState(false);
 
 	const messageMenu = () => {
@@ -17,9 +18,27 @@ const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, pa
 	}
 
 	const deleteMessage = () => {
-		chatDeleteMessage(time, nick);
+		chatDeleteMessage(time, uid);
 		setEditMessageMenu(false);
 		patternNotify('remove_message');
+	}
+
+	const deleteAllMessageUser = () => {
+		deleteAllMessage(uid);
+		setEditMessageMenu(false);
+		patternNotify('remove_all_message');
+	}
+
+	const blockUser = () => {
+		banUser(uid);
+		setEditMessageMenu(false);
+		patternNotify('user_ban');
+	}
+
+	const unblockUser = () => {
+		unbanUser(uid);
+		setEditMessageMenu(false);
+		patternNotify('user_unban');
 	}
 
 	useEffect(() => {
@@ -58,16 +77,20 @@ const ChatMessage = ({img, uid, nick, message, role = 'user', time, userRole, pa
 
 		    {editMessageMenu
 		    && <div className="chat__message--menu--content">
-		    	<div className="chat__message--menu--item">
-		    		Предупреждение
+		    	{role === 'ban'
+		    	? <div className="chat__message--menu--item" onClick={unblockUser}>
+		    		Раз
 		    	</div>
-
-		    	<div className="chat__message--menu--item">
-		    		Заблокировать
-		    	</div>
+		    	: <div className="chat__message--menu--item" onClick={blockUser}>
+		    		Заб
+		    	</div>}
 
 		    	<div className="chat__message--menu--item" onClick={deleteMessage}>
-		    		Удалить
+		    		Одно
+		    	</div>
+
+		    	<div className="chat__message--menu--item" onClick={deleteAllMessageUser}>
+		    		Все
 		    	</div>
 		    </div>}
 			</>}
@@ -81,4 +104,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {patternNotify})(ChatMessage);
+export default connect(mapStateToProps, {patternNotify, banUser, unbanUser, deleteAllMessage})(ChatMessage);

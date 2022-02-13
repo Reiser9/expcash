@@ -130,7 +130,12 @@ export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.
 
 	// Уведомления могут быть анонимные, без использования базы данных, только для redux
 	if(!onlyRedux){
-		userId === 'all' ? firebase.database().ref('notify').update(notifyData) : firebase.database().ref('users/' + userId + '/notify').update(notifyData);
+		if(userId === 'all'){
+			dispatch(addNotifyForAll(notifyData));
+		}
+		else{
+			firebase.database().ref('users/' + userId + '/notify').update(notifyData);
+		}
 	}
 
 	// Добавляем уведомление и делаем уведомления не пустыми
@@ -138,15 +143,24 @@ export const addNotifyAC = (title, text, type, icon, time = 5000, userId = user.
 	dispatch(setNotifyEmpty(false));
 }
 
+// Добавление уведомления для всех пользователей
+const addNotifyForAll = (notifyData) => async (dispatch) => {
+	await firebase.database().ref('users').once('value', snapshot => {
+		for(let i in snapshot.val()){
+			firebase.database().ref('users/' + snapshot.val()[i].uid + '/notify').update(notifyData);
+		}
+	});
+}
+
 // Принимаем id уведомления, uid пользователя, либо иное(all, redux), и кол-во уведомлений всего
-export const removeNotifyAC = (index, userId, number) => (dispatch) => {
+export const removeNotifyAC = (index, userId, number) => async (dispatch) => {
 	// Если уведомление для всех
 	if(userId === 'all'){
-		firebase.database().ref('notify/' + index).set({});
+		await firebase.database().ref('users/' + user.uid + '/notify/' + index).set({});
 	}
 	// Если уведомления анонимные, из redux
 	else if(userId !== 'redux'){
-		firebase.database().ref('users/' + userId + '/notify/' + index).set({});
+		await firebase.database().ref('users/' + userId + '/notify/' + index).set({});
 	}
 	// Удаляем уведомление
 	dispatch(removeNotify(index));
@@ -163,6 +177,9 @@ export const patternNotify = (number) => (dispatch) => {
 			break;
 		case 'remove_message':
 			dispatch(addNotifyAC('Успешно!', 'Сообщение удалено!', 'succes', 'fa-check', 1000));
+			break;
+		case 'remove_all_message':
+			dispatch(addNotifyAC('Успешно!', 'Все сообщения удалены!', 'succes', 'fa-check', 1000));
 			break;
 		case 'data_save':
 			dispatch(addNotifyAC('Успешно!', 'Данные сохранены', 'succes', 'fa-check', 1000));
@@ -250,6 +267,12 @@ export const patternNotify = (number) => (dispatch) => {
 			break;
 		case 'avatar_succes':
 			dispatch(addNotifyAC('Успешно!', 'Аватарка успешно загружена!', 'succes', 'fa-check', 2000));
+			break;
+		case 'user_ban':
+			dispatch(addNotifyAC('Успешно!', 'Пользователь заблокирован!', 'succes', 'fa-check', 2000));
+			break;
+		case 'user_unban':
+			dispatch(addNotifyAC('Успешно!', 'Пользователь разблокирован!', 'succes', 'fa-check', 2000));
 			break;
 		default:
 			break;

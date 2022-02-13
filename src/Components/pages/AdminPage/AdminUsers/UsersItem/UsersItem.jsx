@@ -7,27 +7,33 @@ import NotifyAdd from '../../../../common/Notify/NotifyAdd/NotifyAdd.jsx';
 
 import {userIcon} from '../../../../../redux/app-reducer.js';
 import {patternNotify} from '../../../../../redux/notify-reducer.js';
-import {user, updateDataUser} from '../../../../../redux/auth-reducer.js';
+import {user, updateDataUser, updateDataChatMessage} from '../../../../../redux/auth-reducer.js';
 import {requestRoles} from '../../../../../redux/user-selectors.js';
 
-const UsersItem = ({img, nick, email, role, uid, balance, patternNotify, updateDataUser, roles, id}) => {
+const UsersItem = ({img, nick, email, role, uid, balance, patternNotify, updateDataUser, roles, id, updateDataChatMessage}) => {
 	const [editMode, setEditMode] = useState(false);
 	const [userNick, setUserNick] = useState(nick);
 	const [userBalance, setUserBalance] = useState(balance);
 	const [userRole, setUserRole] = useState(role);
 	const [notifyMode, setNotifyMode] = useState(false);
 
+	const allRoles = Object.keys(roles).map((key) => {
+		return roles[key]
+	});
+
 	const editModeSet = () => {
 		setEditMode(!editMode);
 		if(editMode){
 			if(userNick !== nick){
 				updateDataUser('nick', userNick, uid);
+				updateDataChatMessage('nick', userNick, uid);
 			}
 			if(userBalance !== balance){
 				updateDataUser('balance', userBalance, uid);
 			}
 			if(userRole !== role){
 				updateDataUser('role', userRole, uid);
+				updateDataChatMessage('role', userRole, uid);
 			}
 			if(!(userNick === nick && userBalance === balance && userRole === role)){
 				patternNotify('data_save');
@@ -51,10 +57,6 @@ const UsersItem = ({img, nick, email, role, uid, balance, patternNotify, updateD
 		}
 	}
 
-	const allRoles = Object.keys(roles).map((key) => {
-		return roles[key]
-	});
-
 	const notifyModeTrue = () => {
 		setNotifyMode(true);
 		if(editMode){
@@ -65,8 +67,6 @@ const UsersItem = ({img, nick, email, role, uid, balance, patternNotify, updateD
 	const notifyModeFalse = () => {
 		setNotifyMode(false);
 	}
-
-	// Сделать рефакторинг
 
 	return(
 		<div className="admin__users--item">
@@ -126,4 +126,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {patternNotify, updateDataUser})(UsersItem);
+export default connect(mapStateToProps, {patternNotify, updateDataUser, updateDataChatMessage})(UsersItem);

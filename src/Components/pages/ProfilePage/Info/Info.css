@@ -1,0 +1,80 @@
+.avatar__load{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 1.6rem;
+	background: rgba(0, 0, 0, .7);
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	text-align: center;
+}
+
+.profile__info--img--inner{
+	width: 135px;
+	height: 135px;
+	border-radius: 50%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.profile__info--edit--img--inner{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background: rgba(0, 0, 0, .3);
+	transition: .2s linear;
+	opacity: 0;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile__info--img--inner:hover .profile__info--edit--img--inner{
+	opacity: 1;
+}
+
+.profile__info--img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.profile__info--name, .profile__info--email, .profile__info--id, .profile__info--role, .profile__info--balance{
+	width: 100%;
+	text-align: center;
+	margin-top: 1.5rem;
+	font-size: 2rem;
+}
+
+.profile__info--email, .profile__info--id{
+	font-size: 1.8rem;
+}
+
+.profile__info--email{
+	text-align: left;
+}
+
+.profile__button--quit, .profile__button--delete{
+	padding: 0.9rem 1.5rem;
+	font-size: 1.6rem;
+	margin-top: 1.5rem;
+	border: 1px solid #ff0000;
+	width: 65%;
+}
+
+.profile__button--quit:hover, .profile__button--delete:hover{
+	background: #ff0000;
+}

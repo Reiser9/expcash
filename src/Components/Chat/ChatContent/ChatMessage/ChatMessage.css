@@ -1,5 +1,5 @@
 .chat__message{
-	margin: 2rem 0;
+	padding: 1.2rem 1rem;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -19,7 +19,6 @@
 }
 
 .chat__inner--nick{
-	margin-right: 1.5rem;
 	word-break: break-all;
 }
 
@@ -30,7 +29,6 @@
 .chat__inner--text{
 	word-break: break-word;
 	margin-top: .2rem;
-	padding-right: 1.5rem;
 }
 
 .chat__message--menu{
@@ -51,29 +49,49 @@
 }
 
 .chat__message--menu--content{
-	padding: 1rem 0rem;
-	border-radius: 7px;
-	background: #16191f;
-	z-index: 30;
+	width: 100%;
+	height: 100%;
 	position: absolute;
-	top: 8px;
-	right: -5px;
-	width: 170px;
+	top: 0;
+	left: 0;
+	background: var(--sectionB);
+	padding: 1rem;
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
+	z-index: 30;
+	justify-content: center;
+	border: 1px solid var(--blueC);
 }
 
 .chat__message--menu--item{
-	width: 100%;
+	border-radius: 50px;
+	padding: 0.5rem 1rem;
 	transition: .2s linear;
+	background: var(--blueC);
+	border: 1px solid var(--blueC);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
-	padding: 0.8rem 1rem;
-	text-align: center;
+	margin-right: 1rem;
+}
+
+.chat__message--menu--item:last-child{
+	margin-right: 0;
+}
+
+.chat__message--menu--item svg{
+	width: 50%;
+	height: auto;
+}
+
+.chat__message--menu--item svg path{
+	fill: #fff;
 }
 
 .chat__message--menu--item:hover{
-	background: rgba(0, 0, 0, .3);
+	background: none;
+	color: var(--blueC);
 }
 
 /* Роли */

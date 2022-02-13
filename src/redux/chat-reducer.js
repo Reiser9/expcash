@@ -131,9 +131,11 @@ export const sendMessage = (message) => (dispatch) => {
 	
 	let nick, img, role;
 	firebase.database().ref('users/' + user.uid).on('value', snapshot => {
-		nick = snapshot.val().nick;
-		img = snapshot.val().img;
-		role = snapshot.val().role;
+		if(snapshot.val()){
+			nick = snapshot.val().nick;
+			img = snapshot.val().img;
+			role = snapshot.val().role;
+		}
 	});
 
 	let mes = {
@@ -145,7 +147,7 @@ export const sendMessage = (message) => (dispatch) => {
 		time: fullDate
 	}
 
-	firebase.database().ref('chat/' + fullDate + nick).set(mes);
+	firebase.database().ref('chat/' + fullDate + user.uid).set(mes);
 	dispatch(setMessage(''));
 }
 
@@ -155,8 +157,8 @@ export const clearChatAdmin = () => {
 }
 
 // Удалить сообщение из чата, передав время и ник
-export const chatDeleteMessage = (time, nick) => {
-	firebase.database().ref('chat/' + time + nick).set({});
+export const chatDeleteMessage = (time, uid) => {
+	firebase.database().ref('chat/' + time + uid).set({});
 }
 
 export default chatReducer;

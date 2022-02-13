@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 import $ from 'jquery';
 
 import './MobileMenu.css';
 
-import {NavLink} from 'react-router-dom';
-import {quitAccount} from '../../../redux/auth-reducer.js';
 import {modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff, modalOnAndModalOff} from '../modalCommon.js';
 import {requestIsAuth, requestRole, requestNick, requestImg, requestModalMenuOn, requestBalance} from '../../../redux/user-selectors.js';
+import {userIcon} from '../../../redux/app-reducer.js';
 
 const MobileMenu = ({modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff, balance,
- modalOnAndModalOff, quitAccount, modalMenuOn, isAuth, nick, img, role}) => {
+ modalOnAndModalOff, modalMenuOn, isAuth, nick, img, role}) => {
 	useEffect(() => {
 		$(window).resize(function(){
 		  	if($(window).width() > 991){
@@ -39,10 +39,6 @@ const MobileMenu = ({modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff
 		modalOnAndModalOff('setColorPickerModalOn');
 	}
 
-	const quit = () => {
-		quitAccount();
-	}
-
 	const mobileMenuOn = () => {
 		if(modalMenuOn){
 			modalOnOrOff('setModalMenuOn', false);
@@ -68,13 +64,13 @@ const MobileMenu = ({modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff
 		        </div>
 
 		        {isAuth && <>
-		        <div onClick={quit} className="header__top--profile">
+		        <NavLink to={'/profile'} className="header__top--profile" onClick={mobileMenuOn}>
 		            <span className="site__profile--img">
-		                <img src={img ? img : "https://www.movingauthority.com/static/new_design/images/user.png"} alt="Аватарка" className="user__img" />
+		                <img src={img ? img : userIcon} alt="Аватарка" className="user__img" />
 		            </span>
 
 		            {nick}
-		        </div>
+		        </NavLink>
 
 		        <div className="balance__inner">
 		            <span className="en">
@@ -162,4 +158,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, {modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff, modalOnAndModalOff, quitAccount})(MobileMenu);
+export default connect(mapStateToProps, {modalOnAndAllOff, modalOnOrOff, modalOnAndAllOffAndModalOff, modalOnAndModalOff})(MobileMenu);

@@ -9,7 +9,7 @@ const FavoriteItem = ({gameName, editMode, count, id, swapRight, swapLeft, favor
 	}
 
 	return(
-		<div className={`main__like--games--item like__game ${editMode && 'active__edit'}`}>
+		<div className={`main__like--games--item like__game ${(editMode && count > 1) && 'active__edit'}`}>
 		    <NavLink to={`/${gameName}`} className="game__inner--mask">
 		        <span className="games__mask--text--inner">{gameName}</span>
 		    </NavLink>
